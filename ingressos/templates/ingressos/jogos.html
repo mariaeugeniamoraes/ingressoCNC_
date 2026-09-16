@@ -12,13 +12,25 @@
 
     <p>Escolha uma partida para comprar seu ingresso.</p>
 
-    <h2>Náutico x Adversário</h2>
+    {% for jogo in jogos %}
 
-    <p>Data: 20/09/2026</p>
-    <p>Horário: 16:00</p>
-    <p>Local: Estádio dos Aflitos</p>
+        <h2>Náutico x {{ jogo.adversario }}</h2>
 
-    <button>Comprar ingresso</button>
+        <p>Data: {{ jogo.data|date:"d/m/Y" }}</p>
+
+        <p>Horário: {{ jogo.horario|time:"H:i" }}</p>
+
+        <p>Local: {{ jogo.estadio }}</p>
+
+        <button>Comprar ingresso</button>
+
+        <hr>
+
+    {% empty %}
+
+        <p>Nenhum jogo disponível no momento.</p>
+
+    {% endfor %}
 
 </body>
 
