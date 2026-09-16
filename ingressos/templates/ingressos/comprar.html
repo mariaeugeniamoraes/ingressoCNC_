@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Comprar ingresso</title>
+</head>
+
+<body>
+
+    <h1>Náutico x {{ jogo.adversario }}</h1>
+
+    <p>Data: {{ jogo.data|date:"d/m/Y" }}</p>
+    <p>Horário: {{ jogo.horario|time:"H:i" }}</p>
+    <p>Local: {{ jogo.estadio }}</p>
+
+    <h2>Escolha seu setor</h2>
+
+    {% for setor in setores %}
+
+        <h3>{{ setor.nome }}</h3>
+
+        <p>Preço: R$ {{ setor.preco }}</p>
+        <p>Ingressos disponíveis: {{ setor.quantidade }}</p>
+
+        <a href="{% url 'selecionar_setor' setor.id %}">
+            <button>Selecionar</button>
+        </a>
+
+        <hr>
+
+    {% empty %}
+
+        <p>Não existem setores disponíveis para este jogo.</p>
+
+    {% endfor %}
+
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Resumo do pedido</title>
+</head>
+
+<body>
+
+    <h1>Resumo do pedido</h1>
+
+    <h2>{{ setor.jogo }}</h2>
+
+    <p>Setor: {{ setor.nome }}</p>
+
+    <p>Preço unitário: R$ {{ setor.preco }}</p>
+
+    <p>Quantidade: {{ quantidade }}</p>
+
+    <hr>
+
+    <h2>Total: R$ {{ total }}</h2>
+
+    <form action="{% url 'finalizar_compra' setor.id %}" method="POST">
+
+    {% csrf_token %}
+
+    <input
+        type="hidden"
+        name="quantidade"
+        value="{{ quantidade }}"
+    >
+
+    <button type="submit">Finalizar compra</button>
+
+</form>
+</body>
+
+</html>

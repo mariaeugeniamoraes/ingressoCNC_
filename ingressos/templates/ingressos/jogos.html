@@ -22,7 +22,9 @@
 
         <p>Local: {{ jogo.estadio }}</p>
 
-        <button>Comprar ingresso</button>
+       <a href="{% url 'comprar' jogo.id %}">
+           <button>Comprar ingresso</button>
+       </a> 
 
         <hr>
 

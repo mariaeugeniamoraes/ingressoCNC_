@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Selecionar ingresso</title>
+</head>
+
+<body>
+
+    <h1>Comprar ingresso</h1>
+
+    <h2>{{ setor.jogo }}</h2>
+
+    <p>Setor: {{ setor.nome }}</p>
+
+    <p>Preço unitário: R$ {{ setor.preco }}</p>
+
+    <p>Ingressos disponíveis: {{ setor.quantidade }}</p>
+
+    <h3>Quantidade</h3>
+
+    <form action="{% url 'resumo' setor.id %}" method="GET">
+
+    <input
+        type="number"
+        id="quantidade"
+        name="quantidade"
+        value="1"
+        min="1"
+        max="{{ setor.quantidade }}"
+    >
+
+     <h3>
+        Total: R$ <span id="total">{{ setor.preco }}</span>
+    </h3>
+
+    <button type="submit">Continuar compra</button>
+
+</form>
+
+    <script>
+        const preco = parseFloat("{{ setor.preco }}".replace(",", "."));
+
+        const quantidade = document.getElementById("quantidade");
+
+        const total = document.getElementById("total");
+
+        quantidade.addEventListener("input", function() {
+
+            const valorTotal = preco * quantidade.value;
+
+            total.textContent = valorTotal.toFixed(2);
+
+        });
+    </script>
+
+</body>
+
+</html>

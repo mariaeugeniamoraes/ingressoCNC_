@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Compra finalizada</title>
+</head>
+
+<body>
+
+    <h1>Compra realizada com sucesso!</h1>
+
+    <h2>{{ pedido.setor.jogo }}</h2>
+
+    <p>Setor: {{ pedido.setor.nome }}</p>
+
+    <p>Quantidade: {{ pedido.quantidade }}</p>
+
+    <p>Total: R$ {{ pedido.valor_total }}</p>
+
+    <p>Número do pedido: {{ pedido.id }}</p>
+
+    <a href="{% url 'jogos' %}">
+        <button>Voltar para os jogos</button>
+    </a>
+
+</body>
+
+</html>
