@@ -1,3 +1,6 @@
+<p align="center"> <img src="docs/banner.png" alt="Banner Náutico Ingressos" width="100%"> </p> <h1 align="center">🎟️ Náutico Ingressos</h1> <p align="center"> <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5"> <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3"> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript"> <img src="https://img.shields.io/badge/Django-092E20?logo=django&logoColor=white" alt="Django"> <img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white" alt="MySQL"> </p>
+
+
 # 🎟️ Náutico Ingressos
 
 Sistema web para compra de ingressos dos jogos do **Clube Náutico Capibaribe**, desenvolvido como projeto pessoal.
@@ -168,13 +171,20 @@ nautico-ingressos/
 
 ---
 
-## 👨‍💻 Autor
+## 👨‍💻 Autores
 
-**Daniel**
+**Daniel Bezerra**
 Estudante de Ciência da Computação na CESAR School
 
-[![GitHub](https://img.shields.io/badge/GitHub-SEU--USUARIO-181717?logo=github)](https://github.com/SEU-USUARIO)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Daniel-0A66C2?logo=linkedin)](https://linkedin.com/in/SEU-LINKEDIN)
+
+[![GitHub](https://github.com/DanielBezerraCNC)
+[![LinkedIn](www.linkedin.com/in/danielsantanabezerra)
+
+
+**Maria Eugênia**
+[![GitHub](https://github.com/mariaeugeniamoraes)
+[![LinkedIn](www.linkedin.com/in/maria-eugenia-moraes)
+
 
 ---
 
@@ -184,4 +194,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ---
 
-<p align="center">Feito com ❤️ e muito Timbu 🔴⚪</p>
+<p align="center">Feito com ❤️ para o maior do mundo!🔴⚪</p>
