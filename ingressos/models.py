@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Jogo(models.Model):
@@ -21,6 +22,12 @@ class Setor(models.Model):
         return f"{self.nome} - {self.jogo}"
 
 class Pedido(models.Model):
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
     setor = models.ForeignKey(Setor, on_delete=models.CASCADE)
     quantidade = models.PositiveIntegerField()
     valor_total = models.DecimalField(max_digits=10, decimal_places=2)

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Pedidos</title>
+</head>
+
+<body>
+
+    <h1>Meus Pedidos</h1>
+
+    <p>Olá, {{ user.username }}!</p>
+
+    {% for pedido in pedidos %}
+
+        <h2>Pedido #{{ pedido.id }}</h2>
+
+        <p>Jogo: {{ pedido.setor.jogo }}</p>
+
+        <p>Setor: {{ pedido.setor.nome }}</p>
+
+        <p>Quantidade: {{ pedido.quantidade }}</p>
+
+        <p>Total: R$ {{ pedido.valor_total }}</p>
+
+        <p>
+            Data da compra:
+            {{ pedido.data_compra|date:"d/m/Y H:i" }}
+        </p>
+
+        <hr>
+
+    {% empty %}
+
+        <p>Você ainda não possui pedidos.</p>
+
+    {% endfor %}
+
+    <a href="{% url 'home' %}">
+        <button>Voltar para o início</button>
+    </a>
+
+</body>
+
+</html>

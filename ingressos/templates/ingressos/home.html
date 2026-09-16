@@ -10,6 +10,30 @@
 
     <h1>Ingressos Náutico</h1>
 
+    {% if user.is_authenticated %}
+
+        <p>Olá, {{ user.username }}!</p>
+
+         <a href="{% url 'meus_pedidos' %}">
+             <button>Meus Pedidos</button>
+        </a>
+
+        <a href="{% url 'logout' %}">
+            <button>Sair</button>
+        </a>
+
+    {% else %}
+
+        <a href="{% url 'login' %}">
+            <button>Entrar</button>
+        </a>
+
+        <a href="{% url 'cadastro' %}">
+            <button>Criar conta</button>
+        </a>
+
+    {% endif %}
+
     <p>Compre seu ingresso para os próximos jogos.</p>
 
     <a href="{% url 'jogos' %}">

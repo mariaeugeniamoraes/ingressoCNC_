@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Jogo, Setor, Pedido
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     return render(request, 'ingressos/home.html')
@@ -15,6 +17,7 @@ def jogos(request):
         {'jogos': lista_jogos}
     )
 
+@login_required(login_url='login')
 def comprar(request, jogo_id):
     jogo = get_object_or_404(Jogo, id=jogo_id)
     setores = jogo.setor_set.all()
@@ -54,6 +57,7 @@ def resumo(request, setor_id):
         }
     )
 
+@login_required(login_url='login')
 def finalizar_compra(request, setor_id):
     setor = get_object_or_404(Setor, id=setor_id)
 
@@ -69,10 +73,11 @@ def finalizar_compra(request, setor_id):
     total = setor.preco * quantidade
 
     pedido = Pedido.objects.create(
-        setor=setor,
-        quantidade=quantidade,
-        valor_total=total
-    )
+    usuario=request.user,
+    setor=setor,
+    quantidade=quantidade,
+    valor_total=total
+)
 
     setor.quantidade = setor.quantidade - quantidade
     setor.save()
@@ -81,5 +86,74 @@ def finalizar_compra(request, setor_id):
         request,
         'ingressos/compra_finalizada.html',
         {'pedido': pedido}
+    )
+
+def cadastro(request):
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return render(
+                request,
+                'ingressos/cadastro_sucesso.html'
+            )
+
+    else:
+        form = UserCreationForm()
+
+    return render(
+        request,
+        'ingressos/cadastro.html',
+        {'form': form}
+    )
+
+def entrar(request):
+    mensagem = None
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        usuario = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if usuario is not None:
+            login(request, usuario)
+
+            proxima_pagina = request.POST.get('next')
+
+            if proxima_pagina:
+                return redirect(proxima_pagina)
+
+            return redirect('home')
+        else:
+            mensagem = 'Usuário ou senha incorretos.'
+
+    return render(
+        request,
+        'ingressos/login.html',
+        {'mensagem': mensagem}
+    )
+
+def sair(request):
+    logout(request)
+    return redirect('home')
+
+@login_required(login_url='login')
+def meus_pedidos(request):
+    pedidos = Pedido.objects.filter(
+        usuario=request.user
+    ).order_by('-data_compra')
+
+    return render(
+        request,
+        'ingressos/meus_pedidos.html',
+        {'pedidos': pedidos}
     )
 # Create your views here.
