@@ -3,16 +3,19 @@
 
 # 🎟️ Náutico Ingressos
 
-Sistema web para compra de ingressos dos jogos do **Clube Náutico Capibaribe**, desenvolvido como projeto pessoal.
+Sistema web desenvolvido em Django para simular a compra de ingressos
+para jogos do Clube Náutico Capibaribe.
 
-> ⚠️ **Aviso:** este é um projeto pessoal e de estudo, sem qualquer vínculo oficial com o Clube Náutico Capibaribe. Nenhuma venda real é realizada.
-
+> ⚠️ **Projeto acadêmico e de estudo.**
+> Este sistema não possui vínculo oficial com o Clube Náutico Capibaribe
+> e não realiza vendas reais.
 ---
 
 ## 📋 Sumário
 
 - [Sobre o projeto](#-sobre-o-projeto)
 - [Funcionalidades](#-funcionalidades)
+- [Fluxo da aplicação](#-fluxo-da-aplicação)
 - [Tecnologias](#-tecnologias)
 - [Pré-requisitos](#-pré-requisitos)
 - [Como rodar o projeto](#-como-rodar-o-projeto)
@@ -26,9 +29,16 @@ Sistema web para compra de ingressos dos jogos do **Clube Náutico Capibaribe**,
 
 ## 💡 Sobre o projeto
 
-O **Náutico Ingressos** simula uma plataforma de venda de ingressos para os jogos do Timbu nos Aflitos. O torcedor pode ver os próximos jogos, escolher o setor do estádio, selecionar a quantidade de ingressos e finalizar a compra.
+O **Náutico Ingressos** é uma aplicação web que simula uma plataforma
+de venda de ingressos para partidas de futebol.
 
-O objetivo do projeto é praticar o desenvolvimento web completo (front-end, back-end e banco de dados) em um contexto real e divertido.
+O usuário pode criar uma conta, fazer login, visualizar os jogos
+disponíveis, escolher o setor do estádio, selecionar a quantidade de
+ingressos e finalizar uma compra simulada.
+
+O projeto foi desenvolvido com o objetivo de praticar conceitos de
+**desenvolvimento web**, incluindo front-end, back-end, banco de dados,
+autenticação de usuários e versionamento de código.
 
 ---
 
@@ -39,11 +49,33 @@ O objetivo do projeto é praticar o desenvolvimento web completo (front-end, bac
 - [x] Escolha de setor e quantidade de ingressos
 - [x] Carrinho de compras
 - [ ] Pagamento simulado
-- [ ] Histórico de compras do usuário
+- [x] Histórico de compras do usuário
 - [ ] Painel administrativo para cadastrar jogos e setores
 - [ ] Geração de ingresso com QR Code
 
-> Marque com `[x]` o que já está pronto e ajuste a lista conforme o projeto evoluir.
+
+
+---
+
+## 🔄 Fluxo da aplicação
+
+O fluxo principal de compra funciona da seguinte forma:
+
+Usuário  
+↓  
+Cadastro / Login  
+↓  
+Visualização dos próximos jogos  
+↓  
+Escolha do setor  
+↓  
+Seleção da quantidade de ingressos  
+↓  
+Resumo do pedido  
+↓  
+Finalização da compra  
+↓  
+Meus pedidos
 
 ---
 
