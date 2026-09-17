@@ -1,4 +1,4 @@
-<p align="center"> <img src="docs/Nautico.png" alt="Banner Náutico Ingressos" width="100%"> </p> <h1 align="center">🎟️ Náutico Ingressos</h1> <p align="center"> <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5"> <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3"> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript"> <img src="https://img.shields.io/badge/Django-092E20?logo=django&logoColor=white" alt="Django"> <img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white" alt="MySQL"> </p>
+<p align="center"> <img src="docs/Nautico.png" alt="Banner Náutico Ingressos" width="70%"> </p> <h1 align="center">🎟️ Náutico Ingressos</h1> <p align="center"> <img src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" alt="HTML5"> <img src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white" alt="CSS3"> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black" alt="JavaScript"> <img src="https://img.shields.io/badge/Django-092E20?logo=django&logoColor=white" alt="Django"> <img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white" alt="MySQL"> </p>
 
 
 # 🎟️ Náutico Ingressos
@@ -208,17 +208,14 @@ nautico-ingressos/
 **Daniel Bezerra**
 Estudante de Ciência da Computação na CESAR School
 
-
-[![GitHub](https://github.com/DanielBezerraCNC)
-[![LinkedIn](www.linkedin.com/in/danielsantanabezerra)
-
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/DanielBezerraCNC)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/danielsantanabezerra)
 
 **Maria Eugênia Moraes**
-Estudante de Ciência da Computação na CESAR school
+Estudante de Ciência da Computação na CESAR School
 
-[![GitHub](https://github.com/mariaeugeniamoraes)
-[![LinkedIn](www.linkedin.com/in/maria-eugenia-moraes)
-
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/mariaeugeniamoraes)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/maria-eugenia-moraes)
 
 ---
 
@@ -228,4 +225,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ---
 
-<p align="center">Feito com ❤️ para o maior do mundo!🔴⚪</p>
+<p align="center">Feito com ❤️ para o maior do mundo!🐭🔴⚪</p>
