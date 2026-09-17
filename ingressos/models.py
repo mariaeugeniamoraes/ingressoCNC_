@@ -5,7 +5,10 @@ from django.contrib.auth.models import User
 class Jogo(models.Model):
     adversario = models.CharField(max_length=100)
     data = models.DateField()
-    horario = models.TimeField()
+    horario = models.TimeField(
+        null=True,
+        blank=True
+    )
     estadio = models.CharField(max_length=100)
 
     def __str__(self):

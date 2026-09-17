@@ -1,4 +1,5 @@
 {% extends 'ingressos/base.html' %}
+
 {% load static %}
 
 {% block title %}
@@ -7,7 +8,9 @@ Escolha seu setor | Ingressos Náutico
 
 
 {% block extra_head %}
+
 <link rel="stylesheet" href="{% static 'ingressos/css/mapa.css' %}">
+
 {% endblock %}
 
 
@@ -22,157 +25,306 @@ Escolha seu setor | Ingressos Náutico
         <h2>Náutico x {{ jogo.adversario }}</h2>
 
         <p>
-            {{ jogo.data|date:"d/m/Y" }} às
-            {{ jogo.horario|time:"H:i" }}
+            {{ jogo.data|date:"d/m/Y" }}
+
+            {% if jogo.horario %}
+                às {{ jogo.horario|time:"H:i" }}
+            {% else %}
+                • Horário a definir
+            {% endif %}
+
             • {{ jogo.estadio }}
         </p>
 
     </div>
 
 
-    <h3 class="titulo-setores">Escolha seu setor</h3>
+    <h3 class="titulo-setores">
+        Escolha seu setor
+    </h3>
 
 
     {% if setores_faltando and user.is_staff %}
+
         <p class="mapa-aviso">
+
             <strong>Aviso para o administrador:</strong>
-            estes setores não existem para este jogo: {{ setores_faltando|join:", " }}.
+
+            estes setores não existem para este jogo:
+            {{ setores_faltando|join:", " }}.
+
             Cadastre-os no admin com esses nomes ou rode
-            <code>python manage.py criar_setores {{ jogo.id }}</code>.
+
+            <code>
+                python manage.py criar_setores {{ jogo.id }}
+            </code>.
+
         </p>
+
     {% endif %}
 
 
     <!-- MAPA DO ESTÁDIO -->
+
     <div class="mapa-estadio">
 
         <div id="mapa">
-            <svg viewBox="5 36 790 536" role="group" aria-label="Mapa dos setores do estádio">
 
-                <!-- gramado e linhas do campo -->
-                <ellipse class="mapa-gramado"
-                         cx="{{ centro_x }}" cy="{{ centro_y }}"
-                         rx="{{ gramado_rx }}" ry="{{ gramado_ry }}"/>
+            <svg
+                viewBox="5 36 790 536"
+                role="group"
+                aria-label="Mapa dos setores do estádio"
+            >
+
+                <!-- GRAMADO -->
+
+                <ellipse
+                    class="mapa-gramado"
+                    cx="{{ centro_x }}"
+                    cy="{{ centro_y }}"
+                    rx="{{ gramado_rx }}"
+                    ry="{{ gramado_ry }}"
+                />
+
+
+                <!-- LINHAS DO CAMPO -->
+
                 <g class="mapa-campo">
-                    <rect x="280" y="195" width="300" height="170"/>
-                    <line x1="430" y1="195" x2="430" y2="365"/>
-                    <circle cx="430" cy="280" r="26"/>
-                    <rect x="280" y="243" width="48" height="74"/>
-                    <rect x="280" y="263" width="18" height="34"/>
-                    <rect x="532" y="243" width="48" height="74"/>
-                    <rect x="562" y="263" width="18" height="34"/>
+
+                    <rect
+                        x="280"
+                        y="195"
+                        width="300"
+                        height="170"
+                    />
+
+                    <line
+                        x1="430"
+                        y1="195"
+                        x2="430"
+                        y2="365"
+                    />
+
+                    <circle
+                        cx="430"
+                        cy="280"
+                        r="26"
+                    />
+
+                    <rect
+                        x="280"
+                        y="243"
+                        width="48"
+                        height="74"
+                    />
+
+                    <rect
+                        x="280"
+                        y="263"
+                        width="18"
+                        height="34"
+                    />
+
+                    <rect
+                        x="532"
+                        y="243"
+                        width="48"
+                        height="74"
+                    />
+
+                    <rect
+                        x="562"
+                        y="263"
+                        width="18"
+                        height="34"
+                    />
+
                 </g>
 
-                <!-- arquibancadas -->
+
+                <!-- SETORES DO ESTÁDIO -->
+
                 {% for s in mapa %}
-                <g class="mapa-setor" data-chave="{{ s.chave }}"
-                   tabindex="0" role="button" aria-pressed="false"
-                   aria-label="Setor {{ s.nome }}, {{ s.situacao }}">
-                    <path d="{{ s.caminho }}" fill="{{ s.cor }}"/>
-                    <text x="{{ s.rotulo_x }}" y="{{ s.rotulo_y }}" fill="{{ s.cor_texto }}">{{ s.nome }}</text>
-                </g>
+
+                    <g
+                        class="mapa-setor"
+                        data-chave="{{ s.chave }}"
+                        tabindex="0"
+                        role="button"
+                        aria-pressed="false"
+                        aria-label="Setor {{ s.nome }}, {{ s.situacao }}"
+                    >
+
+                        <path
+                            d="{{ s.caminho }}"
+                            fill="{{ s.cor }}"
+                        />
+
+                        <text
+                            x="{{ s.rotulo_x }}"
+                            y="{{ s.rotulo_y }}"
+                            fill="{{ s.cor_texto }}"
+                        >
+                            {{ s.nome }}
+                        </text>
+
+                    </g>
+
                 {% endfor %}
 
-                <!-- portões -->
-                {% for s in mapa %}{% for p in s.portoes %}
-                <g class="mapa-portao" aria-hidden="true">
-                    <rect x="{{ p.caixa_x }}" y="{{ p.caixa_y }}" width="30" height="22" rx="5"/>
-                    <text x="{{ p.x }}" y="{{ p.y }}">{{ p.rotulo }}</text>
-                </g>
-                {% endfor %}{% endfor %}
+
+                <!-- PORTÕES -->
+
+                {% for s in mapa %}
+
+                    {% for p in s.portoes %}
+
+                        <g
+                            class="mapa-portao"
+                            aria-hidden="true"
+                        >
+
+                            <rect
+                                x="{{ p.caixa_x }}"
+                                y="{{ p.caixa_y }}"
+                                width="30"
+                                height="22"
+                                rx="5"
+                            />
+
+                            <text
+                                x="{{ p.x }}"
+                                y="{{ p.y }}"
+                            >
+                                {{ p.rotulo }}
+                            </text>
+
+                        </g>
+
+                    {% endfor %}
+
+                {% endfor %}
 
             </svg>
+
         </div>
 
 
-        <aside class="mapa-painel" aria-live="polite">
+        <!-- PAINEL DE INFORMAÇÕES DO SETOR -->
 
-            <p class="mapa-dica" id="mapa-dica">
-                Toque em um setor do mapa para ver o preço e os portões de entrada.
+        <aside
+            class="mapa-painel"
+            aria-live="polite"
+        >
+
+            <p
+                class="mapa-dica"
+                id="mapa-dica"
+            >
+                Clique em um setor do mapa para ver
+                o preço, os portões e comprar seu ingresso.
             </p>
 
-            <div id="mapa-info" hidden>
+
+            <div
+                id="mapa-info"
+                hidden
+            >
+
                 <div class="mapa-info-topo">
-                    <span class="mapa-amostra" id="mapa-info-cor"></span>
+
+                    <span
+                        class="mapa-amostra"
+                        id="mapa-info-cor"
+                    ></span>
+
                     <h3 id="mapa-info-nome"></h3>
+
                 </div>
 
-                <p class="mapa-preco" id="mapa-info-preco"></p>
-                <p class="mapa-detalhe" id="mapa-info-quantidade"></p>
-                <p class="mapa-detalhe">Portões: <strong id="mapa-info-portoes"></strong></p>
 
-                <a href="#" class="botao-principal" id="mapa-info-botao">Selecionar</a>
-                <p class="mapa-esgotado" id="mapa-info-esgotado" hidden>
+                <p
+                    class="mapa-preco"
+                    id="mapa-info-preco"
+                ></p>
+
+
+                <p
+                    class="mapa-detalhe"
+                    id="mapa-info-quantidade"
+                ></p>
+
+
+                <p class="mapa-detalhe">
+
+                    Portões:
+
+                    <strong id="mapa-info-portoes"></strong>
+
+                </p>
+
+
+                <a
+                    href="#"
+                    class="botao-principal"
+                    id="mapa-info-botao"
+                >
+                    Comprar ingresso
+                </a>
+
+
+                <p
+                    class="mapa-esgotado"
+                    id="mapa-info-esgotado"
+                    hidden
+                >
                     Venda indisponível neste setor.
                 </p>
+
             </div>
 
+
+            <!-- LEGENDA DOS SETORES -->
+
             <ul class="mapa-legenda">
+
                 {% for s in mapa %}
-                <li>
-                    <span class="mapa-amostra" style="background-color: {{ s.cor }}"></span>
-                    {{ s.nome }} — {{ s.situacao }}
-                </li>
+
+                    <li>
+
+                        <span
+                            class="mapa-amostra"
+                            style="background-color: {{ s.cor }}"
+                        ></span>
+
+                        {{ s.nome }} — {{ s.situacao }}
+
+                    </li>
+
                 {% endfor %}
-                <li><span class="mapa-amostra-portao"></span>Portões de entrada</li>
+
+
+                <li>
+
+                    <span class="mapa-amostra-portao"></span>
+
+                    Portões de entrada
+
+                </li>
+
             </ul>
 
         </aside>
 
     </div>
 
-
-    <!-- LISTA DE SETORES (continua funcionando como antes) -->
-    <div class="lista-setores">
-
-        {% for setor in setores %}
-
-            <div class="card-setor">
-
-                <div class="card-setor-conteudo">
-
-                    <h3>{{ setor.nome }}</h3>
-
-                    <p class="preco-setor">
-                        R$ {{ setor.preco }}
-                    </p>
-
-                    <p class="disponibilidade">
-                        {{ setor.quantidade }} ingressos disponíveis
-                    </p>
-
-                    <a
-                        href="{% url 'selecionar_setor' setor.id %}"
-                        class="botao-principal"
-                    >
-                        Selecionar
-                    </a>
-
-                </div>
-
-            </div>
-
-        {% empty %}
-
-            <div class="sem-jogos">
-
-                <h3>Nenhum setor disponível</h3>
-
-                <p>
-                    Ainda não existem setores cadastrados
-                    para esta partida.
-                </p>
-
-            </div>
-
-        {% endfor %}
-
-    </div>
-
 </section>
 
 
+<!-- DADOS DO MAPA VINDOS DO DJANGO -->
+
 {{ dados_mapa|json_script:"dados-mapa" }}
+
 
 <script>
 
@@ -180,74 +332,243 @@ Escolha seu setor | Ingressos Náutico
         document.getElementById("dados-mapa").textContent
     );
 
-    // URL de exemplo com id 0; o 0 é trocado pelo id do setor escolhido
-    const URL_SELECIONAR = "{% url 'selecionar_setor' 0 %}";
 
-    const areaMapa = document.getElementById("mapa");
-    const setoresMapa = document.querySelectorAll(".mapa-setor");
+    /*
+        URL usada para levar o usuário
+        para a página do setor escolhido.
 
-    const dica = document.getElementById("mapa-dica");
-    const info = document.getElementById("mapa-info");
-    const infoCor = document.getElementById("mapa-info-cor");
-    const infoNome = document.getElementById("mapa-info-nome");
-    const infoPreco = document.getElementById("mapa-info-preco");
-    const infoQuantidade = document.getElementById("mapa-info-quantidade");
-    const infoPortoes = document.getElementById("mapa-info-portoes");
-    const infoBotao = document.getElementById("mapa-info-botao");
-    const infoEsgotado = document.getElementById("mapa-info-esgotado");
+        O ID 0 será substituído pelo ID
+        verdadeiro do setor clicado.
+    */
+
+    const URL_SELECIONAR =
+        "{% url 'selecionar_setor' 0 %}";
+
+
+    const areaMapa =
+        document.getElementById("mapa");
+
+
+    const setoresMapa =
+        document.querySelectorAll(".mapa-setor");
+
+
+    const dica =
+        document.getElementById("mapa-dica");
+
+
+    const info =
+        document.getElementById("mapa-info");
+
+
+    const infoCor =
+        document.getElementById("mapa-info-cor");
+
+
+    const infoNome =
+        document.getElementById("mapa-info-nome");
+
+
+    const infoPreco =
+        document.getElementById("mapa-info-preco");
+
+
+    const infoQuantidade =
+        document.getElementById("mapa-info-quantidade");
+
+
+    const infoPortoes =
+        document.getElementById("mapa-info-portoes");
+
+
+    const infoBotao =
+        document.getElementById("mapa-info-botao");
+
+
+    const infoEsgotado =
+        document.getElementById("mapa-info-esgotado");
+
 
 
     function selecionarNoMapa(chave) {
 
         const setor = SETORES_MAPA[chave];
-        if (!setor) return;
 
-        areaMapa.classList.add("mapa-com-selecao");
 
-        setoresMapa.forEach(function(elemento) {
-            const ativo = elemento.dataset.chave === chave;
-            elemento.classList.toggle("ativo", ativo);
-            elemento.setAttribute("aria-pressed", ativo);
-        });
+        if (!setor) {
+            return;
+        }
+
+
+        /*
+            Marca visualmente qual setor
+            foi selecionado.
+        */
+
+        areaMapa.classList.add(
+            "mapa-com-selecao"
+        );
+
+
+        setoresMapa.forEach(
+            function(elemento) {
+
+                const ativo =
+                    elemento.dataset.chave === chave;
+
+
+                elemento.classList.toggle(
+                    "ativo",
+                    ativo
+                );
+
+
+                elemento.setAttribute(
+                    "aria-pressed",
+                    ativo
+                );
+
+            }
+        );
+
+
+        /*
+            Esconde a mensagem inicial
+            e mostra as informações do setor.
+        */
 
         dica.hidden = true;
+
         info.hidden = false;
 
-        infoCor.style.backgroundColor = setor.cor;
-        infoNome.textContent = "Setor " + setor.nome;
-        infoPreco.textContent = setor.situacao;
-        infoPortoes.textContent = setor.portoes;
+
+        /*
+            Preenche as informações usando
+            os dados vindos do banco.
+        */
+
+        infoCor.style.backgroundColor =
+            setor.cor;
+
+
+        infoNome.textContent =
+            "Setor " + setor.nome;
+
+
+        infoPreco.textContent =
+            setor.situacao;
+
+
+        infoPortoes.textContent =
+            setor.portoes;
+
+
+        /*
+            Se ainda existem ingressos,
+            mostramos quantidade e botão.
+        */
 
         if (setor.disponivel) {
-            infoQuantidade.textContent = setor.quantidade + " ingressos disponíveis";
+
+            infoQuantidade.textContent =
+                setor.quantidade +
+                " ingressos disponíveis";
+
+
             infoQuantidade.hidden = false;
-            infoBotao.href = URL_SELECIONAR.replace("/0/", "/" + setor.id + "/");
-            infoBotao.textContent = "Selecionar " + setor.nome;
+
+
+            /*
+                Troca o ID 0 pelo ID real
+                do setor escolhido.
+            */
+
+            infoBotao.href =
+                URL_SELECIONAR.replace(
+                    "/0/",
+                    "/" + setor.id + "/"
+                );
+
+
+            infoBotao.textContent =
+                "Comprar ingresso - " +
+                setor.nome;
+
+
             infoBotao.hidden = false;
+
             infoEsgotado.hidden = true;
-        } else {
-            infoQuantidade.hidden = true;
-            infoBotao.hidden = true;
-            infoEsgotado.hidden = false;
+
         }
+
+        else {
+
+            /*
+                Se não houver ingressos,
+                o botão de compra desaparece.
+            */
+
+            infoQuantidade.hidden = true;
+
+            infoBotao.hidden = true;
+
+            infoEsgotado.hidden = false;
+
+        }
+
     }
 
 
-    setoresMapa.forEach(function(elemento) {
 
-        elemento.addEventListener("click", function() {
-            selecionarNoMapa(elemento.dataset.chave);
-        });
+    /*
+        Permite selecionar um setor
+        clicando nele.
+    */
 
-        elemento.addEventListener("keydown", function(evento) {
-            if (evento.key === "Enter" || evento.key === " ") {
-                evento.preventDefault();
-                selecionarNoMapa(elemento.dataset.chave);
-            }
-        });
+    setoresMapa.forEach(
+        function(elemento) {
 
-    });
+            elemento.addEventListener(
+                "click",
+                function() {
+
+                    selecionarNoMapa(
+                        elemento.dataset.chave
+                    );
+
+                }
+            );
+
+
+            /*
+                Também permite selecionar
+                usando Enter ou espaço.
+            */
+
+            elemento.addEventListener(
+                "keydown",
+                function(evento) {
+
+                    if (
+                        evento.key === "Enter" ||
+                        evento.key === " "
+                    ) {
+
+                        evento.preventDefault();
+
+                        selecionarNoMapa(
+                            elemento.dataset.chave
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
 
 </script>
+
 
 {% endblock %}
