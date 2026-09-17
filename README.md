@@ -213,7 +213,9 @@ Estudante de Ciência da Computação na CESAR School
 [![LinkedIn](www.linkedin.com/in/danielsantanabezerra)
 
 
-**Maria Eugênia**
+**Maria Eugênia Moraes**
+Estudante de Ciência da Computação na CESAR school
+
 [![GitHub](https://github.com/mariaeugeniamoraes)
 [![LinkedIn](www.linkedin.com/in/maria-eugenia-moraes)
 
