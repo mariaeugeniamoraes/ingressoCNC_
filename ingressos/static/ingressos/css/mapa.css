@@ -1,0 +1,195 @@
+/* =========================
+   MAPA DOS SETORES
+========================= */
+
+.mapa-estadio {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 25px;
+    align-items: start;
+
+    background-color: var(--branco);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.mapa-estadio svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.mapa-gramado {
+    fill: #e9ece6;
+}
+
+.mapa-campo {
+    fill: none;
+    stroke: #8a8f86;
+    stroke-width: 2.5;
+}
+
+/* Setores */
+.mapa-setor {
+    cursor: pointer;
+    outline: none;
+}
+
+.mapa-setor path {
+    stroke: var(--branco);
+    stroke-width: 3;
+    transition: opacity 0.15s, filter 0.15s;
+}
+
+.mapa-setor text {
+    font-size: 17px;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+}
+
+.mapa-setor:hover path {
+    filter: brightness(1.12);
+}
+
+.mapa-setor:focus-visible path {
+    stroke: var(--texto);
+    stroke-width: 5;
+}
+
+/* Quando um setor está escolhido, os outros ficam apagados */
+.mapa-com-selecao .mapa-setor path {
+    opacity: 0.35;
+}
+
+.mapa-com-selecao .mapa-setor.ativo path {
+    opacity: 1;
+    stroke: var(--texto);
+    stroke-width: 5;
+}
+
+/* Portões */
+.mapa-portao rect {
+    fill: var(--branco);
+    stroke: var(--texto);
+    stroke-width: 1.5;
+}
+
+.mapa-portao text {
+    font-size: 13px;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    fill: var(--texto);
+}
+
+/* Painel lateral */
+.mapa-painel {
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.mapa-painel [hidden] {
+    display: none !important;
+}
+
+.mapa-dica {
+    color: var(--cinza);
+    line-height: 1.5;
+}
+
+.mapa-info-topo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mapa-amostra {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.mapa-info-topo h3 {
+    font-size: 22px;
+}
+
+.mapa-preco {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 12px 0 6px;
+}
+
+.mapa-detalhe {
+    color: var(--cinza);
+    margin-bottom: 6px;
+}
+
+.mapa-detalhe strong {
+    color: var(--texto);
+}
+
+.mapa-painel .botao-principal {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+}
+
+.mapa-esgotado {
+    margin-top: 18px;
+    font-weight: bold;
+    color: var(--vermelho-principal);
+}
+
+/* Legenda */
+.mapa-legenda {
+    list-style: none;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e2e2;
+}
+
+.mapa-legenda li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    color: var(--cinza);
+    font-size: 15px;
+}
+
+.mapa-legenda .mapa-amostra-portao {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--texto);
+    border-radius: 4px;
+}
+
+/* Aviso para o administrador */
+.mapa-aviso {
+    background-color: #fff6d6;
+    border-left: 5px solid #e0a100;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* Celular */
+@media (max-width: 800px) {
+    .mapa-estadio {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mapa-setor path {
+        transition: none;
+    }
+}

@@ -3,6 +3,7 @@ from .models import Jogo, Setor, Pedido
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from .mapa_estadio import montar_mapa, CONTEXTO_FIXO
 
 def home(request):
     return render(request, 'ingressos/home.html')
@@ -22,12 +23,18 @@ def comprar(request, jogo_id):
     jogo = get_object_or_404(Jogo, id=jogo_id)
     setores = jogo.setor_set.all()
 
+    mapa, dados_mapa, setores_faltando = montar_mapa(setores)
+
     return render(
         request,
         'ingressos/comprar.html',
         {
             'jogo': jogo,
-            'setores': setores
+            'setores': setores,
+            'mapa': mapa,
+            'dados_mapa': dados_mapa,
+            'setores_faltando': setores_faltando,
+            **CONTEXTO_FIXO,
         }
     )
 
