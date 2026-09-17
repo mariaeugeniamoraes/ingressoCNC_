@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Ingressos Náutico{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'ingressos/css/style.css' %}">
+</head>
+
+<body>
+
+   <header>
+
+    <h1>Ingressos Náutico</h1>
+
+    <button
+        class="botao-menu"
+        id="botao-menu"
+        type="button"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+    >
+        ☰
+    </button>
+
+
+    <nav id="menu">
+
+        <a href="{% url 'home' %}">
+            Início
+        </a>
+
+        <a href="{% url 'jogos' %}">
+            Jogos
+        </a>
+
+
+        {% if user.is_authenticated %}
+
+            <span class="usuario-logado">
+                Olá, {{ user.username }}
+            </span>
+
+            <a href="{% url 'meus_pedidos' %}">
+                Meus Pedidos
+            </a>
+
+            <a href="{% url 'logout' %}">
+                Sair
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}">
+                Entrar
+            </a>
+
+            <a href="{% url 'cadastro' %}">
+                Criar conta
+            </a>
+
+        {% endif %}
+
+    </nav>
+
+</header>
+
+    <main>
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+    <script>
+
+        const botaoMenu = document.getElementById("botao-menu");
+        const menu = document.getElementById("menu");
+
+        botaoMenu.addEventListener("click", function() {
+
+            menu.classList.toggle("menu-aberto");
+
+            const menuEstaAberto =
+                menu.classList.contains("menu-aberto");
+
+            if (menuEstaAberto) {
+            botaoMenu.textContent = "✕";
+            botaoMenu.setAttribute("aria-expanded", "true");
+            botaoMenu.setAttribute("aria-label", "Fechar menu");
+            } else {
+            botaoMenu.textContent = "☰";
+            botaoMenu.setAttribute("aria-expanded", "false");
+            botaoMenu.setAttribute("aria-label", "Abrir menu");
+            }
+
+    });
+
+ </script>
+
+</body>
+
+</html>

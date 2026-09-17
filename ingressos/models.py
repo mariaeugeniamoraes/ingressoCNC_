@@ -32,6 +32,8 @@ class Pedido(models.Model):
     quantidade = models.PositiveIntegerField()
     valor_total = models.DecimalField(max_digits=10, decimal_places=2)
     data_compra = models.DateTimeField(auto_now_add=True)
+    
+    biometria_verificada = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Pedido {self.id} - {self.setor}"

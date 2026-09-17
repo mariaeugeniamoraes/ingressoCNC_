@@ -76,7 +76,8 @@ def finalizar_compra(request, setor_id):
     usuario=request.user,
     setor=setor,
     quantidade=quantidade,
-    valor_total=total
+    valor_total=total,
+    biometria_verificada=True
 )
 
     setor.quantidade = setor.quantidade - quantidade
@@ -155,5 +156,20 @@ def meus_pedidos(request):
         request,
         'ingressos/meus_pedidos.html',
         {'pedidos': pedidos}
+    )
+
+@login_required(login_url='login')
+def verificacao_facial(request, setor_id):
+    setor = get_object_or_404(Setor, id=setor_id)
+
+    quantidade = request.POST.get('quantidade')
+
+    return render(
+        request,
+        'ingressos/verificacao_facial.html',
+        {
+            'setor': setor,
+            'quantidade': quantidade
+        }
     )
 # Create your views here.

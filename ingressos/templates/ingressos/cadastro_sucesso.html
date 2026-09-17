@@ -1,21 +1,52 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ingressos/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro realizado</title>
-</head>
+{% block title %}
+Cadastro realizado | Ingressos Náutico
+{% endblock %}
 
-<body>
 
-    <h1>Cadastro realizado com sucesso!</h1>
+{% block content %}
 
-    <p>Sua conta foi criada.</p>
+<section class="pagina-sucesso">
 
-    <a href="{% url 'home' %}">
-        <button>Voltar para o início</button>
-    </a>
+    <div class="card-sucesso">
 
-</body>
+        <div class="icone-sucesso">
+            ✓
+        </div>
 
-</html>
+        <p class="hero-destaque">
+            CONTA CRIADA
+        </p>
+
+        <h2>Cadastro realizado com sucesso!</h2>
+
+        <p class="mensagem-sucesso">
+            Sua conta foi criada. Agora você já pode entrar
+            e comprar seus ingressos.
+        </p>
+
+
+        <div class="acoes-sucesso">
+
+            <a
+                href="{% url 'login' %}"
+                class="botao-principal"
+            >
+                Entrar na minha conta
+            </a>
+
+            <a
+                href="{% url 'home' %}"
+                class="botao-secundario"
+            >
+                Voltar para o início
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,25 +1,103 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ingressos/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro</title>
-</head>
+{% block title %}
+Criar conta | Ingressos Náutico
+{% endblock %}
 
-<body>
 
-    <h1>Criar conta</h1>
+{% block content %}
 
-    <form method="POST">
+<section class="pagina-autenticacao">
 
-        {% csrf_token %}
+    <div class="card-autenticacao">
 
-        {{ form.as_p }}
+        <p class="hero-destaque">NOVA CONTA</p>
 
-        <button type="submit">Cadastrar</button>
+        <h2>Criar conta</h2>
 
-    </form>
+        <p class="texto-autenticacao">
+            Cadastre-se para comprar e acompanhar seus ingressos.
+        </p>
 
-</body>
 
-</html>
+        <form method="POST" class="form-autenticacao">
+
+            {% csrf_token %}
+
+
+            <div class="campo-formulario">
+
+                <label for="{{ form.username.id_for_label }}">
+                    Usuário
+                </label>
+
+                {{ form.username }}
+
+                {% if form.username.errors %}
+                    <div class="erro-campo">
+                        {{ form.username.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="campo-formulario">
+
+                <label for="{{ form.password1.id_for_label }}">
+                    Senha
+                </label>
+
+                {{ form.password1 }}
+
+                {% if form.password1.errors %}
+                    <div class="erro-campo">
+                        {{ form.password1.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="campo-formulario">
+
+                <label for="{{ form.password2.id_for_label }}">
+                    Confirmar senha
+                </label>
+
+                {{ form.password2 }}
+
+                {% if form.password2.errors %}
+                    <div class="erro-campo">
+                        {{ form.password2.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="botao-principal botao-autenticacao"
+            >
+                Criar conta
+            </button>
+
+        </form>
+
+
+        <div class="rodape-autenticacao">
+
+            <p>Já possui uma conta?</p>
+
+            <a href="{% url 'login' %}">
+                Entrar
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

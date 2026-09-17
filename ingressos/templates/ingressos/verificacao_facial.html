@@ -1,0 +1,62 @@
+{% extends 'ingressos/base.html' %}
+
+{% block title %}
+Verificação facial | Ingressos Náutico
+{% endblock %}
+
+{% block content %}
+
+<section class="pagina-verificacao">
+
+    <div class="titulo-pagina">
+        <p class="hero-destaque">SEGURANÇA</p>
+        <h2>Verificação de identidade</h2>
+        <p>
+            Conclua a etapa de verificação antes de finalizar o pedido.
+        </p>
+    </div>
+
+    <div class="card-verificacao">
+
+        <div class="icone-rosto">
+            👤
+        </div>
+
+        <h3>Verificação facial</h3>
+
+        <p class="texto-verificacao">
+            Esta é uma simulação acadêmica da etapa de
+            verificação biométrica utilizada no acesso ao evento.
+        </p>
+
+        <div class="aviso-privacidade">
+            Este protótipo não coleta nem armazena dados
+            biométricos reais.
+        </div>
+
+        <form
+            action="{% url 'finalizar_compra' setor.id %}"
+            method="POST"
+        >
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="quantidade"
+                value="{{ quantidade }}"
+            >
+
+            <button
+                type="submit"
+                class="botao-principal botao-verificar"
+            >
+                Verificar identidade
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

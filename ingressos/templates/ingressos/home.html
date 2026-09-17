@@ -1,45 +1,34 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ingressos/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Ingressos Náutico</title>
-</head>
+{% block title %}
+Início | Ingressos Náutico
+{% endblock %}
 
-<body>
 
-    <h1>Ingressos Náutico</h1>
+{% block content %}
 
-    {% if user.is_authenticated %}
+<section class="hero">
 
-        <p>Olá, {{ user.username }}!</p>
+    <div class="hero-conteudo">
 
-         <a href="{% url 'meus_pedidos' %}">
-             <button>Meus Pedidos</button>
+        <p class="hero-destaque">INGRESSOS NÁUTICO</p>
+
+        {% if user.is_authenticated %}
+            <h2>Olá, {{ user.username }}!</h2>
+        {% else %}
+            <h2>Viva a emoção nos Aflitos</h2>
+        {% endif %}
+
+        <p class="hero-texto">
+            Garanta seu lugar e acompanhe o Náutico nos próximos jogos.
+        </p>
+
+        <a href="{% url 'jogos' %}" class="botao-principal">
+            Ver próximos jogos
         </a>
 
-        <a href="{% url 'logout' %}">
-            <button>Sair</button>
-        </a>
+    </div>
 
-    {% else %}
+</section>
 
-        <a href="{% url 'login' %}">
-            <button>Entrar</button>
-        </a>
-
-        <a href="{% url 'cadastro' %}">
-            <button>Criar conta</button>
-        </a>
-
-    {% endif %}
-
-    <p>Compre seu ingresso para os próximos jogos.</p>
-
-    <a href="{% url 'jogos' %}">
-        <button>Ver próximos jogos</button>
-    </a>
-
-</body>
-
-</html>
+{% endblock %}

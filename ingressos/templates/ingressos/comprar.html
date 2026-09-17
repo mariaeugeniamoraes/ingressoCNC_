@@ -1,40 +1,78 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ingressos/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Comprar ingresso</title>
-</head>
+{% block title %}
+Escolha seu setor | Ingressos Náutico
+{% endblock %}
 
-<body>
 
-    <h1>Náutico x {{ jogo.adversario }}</h1>
+{% block content %}
 
-    <p>Data: {{ jogo.data|date:"d/m/Y" }}</p>
-    <p>Horário: {{ jogo.horario|time:"H:i" }}</p>
-    <p>Local: {{ jogo.estadio }}</p>
+<section class="pagina-setores">
 
-    <h2>Escolha seu setor</h2>
+    <div class="titulo-pagina">
 
-    {% for setor in setores %}
+        <p class="hero-destaque">INGRESSOS</p>
 
-        <h3>{{ setor.nome }}</h3>
+        <h2>Náutico x {{ jogo.adversario }}</h2>
 
-        <p>Preço: R$ {{ setor.preco }}</p>
-        <p>Ingressos disponíveis: {{ setor.quantidade }}</p>
+        <p>
+            {{ jogo.data|date:"d/m/Y" }} às
+            {{ jogo.horario|time:"H:i" }}
+            • {{ jogo.estadio }}
+        </p>
 
-        <a href="{% url 'selecionar_setor' setor.id %}">
-            <button>Selecionar</button>
-        </a>
+    </div>
 
-        <hr>
 
-    {% empty %}
+    <h3 class="titulo-setores">Escolha seu setor</h3>
 
-        <p>Não existem setores disponíveis para este jogo.</p>
 
-    {% endfor %}
+    <div class="lista-setores">
 
-</body>
+        {% for setor in setores %}
 
-</html>
+            <div class="card-setor">
+
+                <div class="card-setor-conteudo">
+
+                    <h3>{{ setor.nome }}</h3>
+
+                    <p class="preco-setor">
+                        R$ {{ setor.preco }}
+                    </p>
+
+                    <p class="disponibilidade">
+                        {{ setor.quantidade }} ingressos disponíveis
+                    </p>
+
+                    <a
+                        href="{% url 'selecionar_setor' setor.id %}"
+                        class="botao-principal"
+                    >
+                        Selecionar
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="sem-jogos">
+
+                <h3>Nenhum setor disponível</h3>
+
+                <p>
+                    Ainda não existem setores cadastrados
+                    para esta partida.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

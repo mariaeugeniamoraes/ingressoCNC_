@@ -1,44 +1,103 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ingressos/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
+{% block title %}
+Entrar | Ingressos Náutico
+{% endblock %}
 
-<body>
 
-    <h1>Entrar</h1>
+{% block content %}
 
-    {% if mensagem %}
-        <p>{{ mensagem }}</p>
-    {% endif %}
+<section class="pagina-autenticacao">
 
-    <form method="POST">
+    <div class="card-autenticacao">
 
-        {% csrf_token %}
+        <p class="hero-destaque">MINHA CONTA</p>
 
-        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        <h2>Entrar</h2>
 
-        <p>
-            <label>Usuário:</label>
-            <input type="text" name="username" required>
+        <p class="texto-autenticacao">
+            Acesse sua conta para comprar e acompanhar seus ingressos.
         </p>
 
-        <p>
-            <label>Senha:</label>
-            <input type="password" name="password" required>
-        </p>
 
-        <button type="submit">Entrar</button>
+        {% if erro %}
 
-    </form>
+            <div class="mensagem-erro">
+                {{ erro }}
+            </div>
 
-    <p>
-        Ainda não possui conta?
-        <a href="{% url 'cadastro' %}">Cadastre-se</a>
-    </p>
+        {% endif %}
 
-</body>
 
-</html>
+        <form method="POST" class="form-autenticacao">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="next"
+                value="{{ request.GET.next }}"
+            >
+
+
+            <div class="campo-formulario">
+
+                <label for="username">
+                    Usuário
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Digite seu usuário"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo-formulario">
+
+                <label for="password">
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Digite sua senha"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="botao-principal botao-autenticacao"
+            >
+                Entrar
+            </button>
+
+        </form>
+
+
+        <div class="rodape-autenticacao">
+
+            <p>
+                Ainda não possui uma conta?
+            </p>
+
+            <a href="{% url 'cadastro' %}">
+                Criar conta
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

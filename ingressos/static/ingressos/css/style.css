@@ -1,0 +1,1188 @@
+/* Cores principais do site */
+:root {
+    --vermelho-principal: #d71920;
+    --vermelho-escuro: #a90f15;
+    --branco: #ffffff;
+    --fundo: #f7f7f7;
+    --texto: #222222;
+    --cinza: #666666;
+}
+
+
+/* Configuração geral */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--fundo);
+    color: var(--texto);
+}
+
+
+/* Cabeçalho */
+header {
+    background-color: var(--vermelho-principal);
+    color: var(--branco);
+    padding: 20px 8%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+header h1 {
+    font-size: 26px;
+}
+
+
+/* Menu */
+nav {
+    display: flex;
+    gap: 25px;
+}
+
+
+nav a {
+    color: var(--branco);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+
+/* Conteúdo principal */
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+/* =========================
+   HOME
+========================= */
+
+.hero {
+    background-color: var(--branco);
+    min-height: 420px;
+    border-radius: 16px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 60px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+.hero-conteudo {
+    max-width: 650px;
+}
+
+
+.hero-destaque {
+    color: var(--vermelho-principal);
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2px;
+
+    margin-bottom: 15px;
+}
+
+
+.hero h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+
+.hero-texto {
+    color: var(--cinza);
+    font-size: 19px;
+    line-height: 1.6;
+
+    margin-bottom: 35px;
+}
+
+
+/* Botão principal */
+.botao-principal {
+    display: inline-block;
+
+    background-color: var(--vermelho-principal);
+    color: var(--branco);
+
+    padding: 15px 28px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+
+.botao-principal:hover {
+    background-color: var(--vermelho-escuro);
+    transform: translateY(-2px);
+}
+/* =========================
+   PÁGINA DE JOGOS
+========================= */
+
+.titulo-pagina {
+    margin-bottom: 35px;
+}
+
+.titulo-pagina h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.titulo-pagina > p:last-child {
+    color: var(--cinza);
+    font-size: 17px;
+}
+
+
+/* Lista de jogos */
+
+.lista-jogos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+
+/* Card */
+
+.card-jogo {
+    background-color: var(--branco);
+    border-radius: 12px;
+    overflow: hidden;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Parte vermelha */
+
+.card-jogo-topo {
+    background-color: var(--vermelho-principal);
+    color: var(--branco);
+
+    padding: 12px 25px;
+
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+
+/* Conteúdo */
+
+.card-jogo-conteudo {
+    padding: 30px;
+}
+
+.card-jogo-conteudo h3 {
+    font-size: 25px;
+    margin-bottom: 25px;
+}
+
+.versus {
+    color: var(--vermelho-principal);
+}
+
+
+/* Data, horário e local */
+
+.informacoes-jogo {
+    display: flex;
+    gap: 35px;
+    flex-wrap: wrap;
+
+    margin-bottom: 30px;
+}
+
+.informacoes-jogo p {
+    color: var(--cinza);
+    line-height: 1.5;
+}
+
+.informacoes-jogo strong {
+    color: var(--texto);
+}
+
+
+/* Quando não houver jogos */
+
+.sem-jogos {
+    background-color: var(--branco);
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* =========================
+   ESCOLHA DE SETORES
+========================= */
+
+.titulo-setores {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+
+.lista-setores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+
+.card-setor {
+    background-color: var(--branco);
+
+    border-radius: 12px;
+    border-top: 5px solid var(--vermelho-principal);
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+
+    transition: 0.2s;
+}
+
+
+.card-setor:hover {
+    transform: translateY(-4px);
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+
+.card-setor-conteudo {
+    padding: 30px;
+}
+
+
+.card-setor h3 {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+
+.preco-setor {
+    color: var(--vermelho-principal);
+
+    font-size: 30px;
+    font-weight: bold;
+
+    margin-bottom: 12px;
+}
+
+
+.disponibilidade {
+    color: var(--cinza);
+
+    margin-bottom: 25px;
+}
+
+/* =========================
+   SELEÇÃO DO INGRESSO
+========================= */
+
+.card-compra {
+    background-color: var(--branco);
+
+    max-width: 700px;
+
+    border-radius: 14px;
+
+    padding: 35px;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+.label-compra {
+    color: var(--cinza);
+
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    margin-bottom: 5px;
+}
+
+
+.detalhes-compra h3 {
+    font-size: 27px;
+
+    margin-bottom: 25px;
+}
+
+
+.preco-compra {
+    color: var(--vermelho-principal);
+
+    font-size: 32px;
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+
+.form-compra {
+    margin-top: 30px;
+
+    border-top: 1px solid #eeeeee;
+
+    padding-top: 30px;
+}
+
+
+.form-compra label {
+    display: block;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+}
+
+
+.form-compra input {
+    width: 100px;
+
+    padding: 12px;
+
+    border: 1px solid #cccccc;
+    border-radius: 7px;
+
+    font-size: 16px;
+
+    margin-bottom: 30px;
+}
+
+
+.form-compra input:focus {
+    outline: none;
+
+    border-color: var(--vermelho-principal);
+}
+
+
+.total-compra {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #f7f7f7;
+
+    padding: 20px;
+
+    border-radius: 8px;
+
+    margin-bottom: 25px;
+}
+
+
+.total-compra span {
+    font-weight: bold;
+}
+
+
+.total-compra strong {
+    color: var(--vermelho-principal);
+
+    font-size: 26px;
+}
+
+
+.botao-continuar {
+    border: none;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+/* =========================
+   RESUMO DO PEDIDO
+========================= */
+
+.card-resumo {
+    background-color: var(--branco);
+
+    max-width: 700px;
+
+    padding: 35px;
+
+    border-radius: 14px;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+.resumo-jogo {
+    padding-bottom: 25px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.resumo-jogo h3 {
+    font-size: 25px;
+
+    margin-top: 5px;
+}
+
+
+.resumo-informacoes {
+    padding: 25px 0;
+}
+
+
+.resumo-item {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.resumo-item span {
+    color: var(--cinza);
+}
+
+
+.resumo-item strong {
+    color: var(--texto);
+}
+
+
+.resumo-total {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #f7f7f7;
+
+    padding: 20px;
+
+    margin: 10px 0 25px;
+
+    border-radius: 8px;
+}
+
+
+.resumo-total span {
+    font-size: 18px;
+
+    font-weight: bold;
+}
+
+
+.resumo-total strong {
+    color: var(--vermelho-principal);
+
+    font-size: 28px;
+}
+
+
+.botao-finalizar {
+    width: 100%;
+
+    border: none;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    text-align: center;
+}
+
+/* =========================
+   VERIFICAÇÃO FACIAL
+========================= */
+
+.card-verificacao {
+    background-color: var(--branco);
+    max-width: 600px;
+
+    padding: 40px;
+    border-radius: 14px;
+
+    text-align: center;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+.icone-rosto {
+    width: 100px;
+    height: 100px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 3px solid var(--vermelho-principal);
+    border-radius: 50%;
+
+    font-size: 45px;
+}
+
+
+.card-verificacao h3 {
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+
+.texto-verificacao {
+    color: var(--cinza);
+    line-height: 1.6;
+
+    margin-bottom: 20px;
+}
+
+
+.aviso-privacidade {
+    background-color: #f7f7f7;
+
+    padding: 15px;
+    border-radius: 8px;
+
+    font-size: 14px;
+    color: var(--cinza);
+
+    margin-bottom: 25px;
+}
+
+
+.botao-verificar {
+    width: 100%;
+
+    border: none;
+    cursor: pointer;
+
+    font-size: 16px;
+}
+/* =========================
+   COMPRA FINALIZADA
+========================= */
+
+.pagina-sucesso {
+    display: flex;
+    justify-content: center;
+
+    padding: 20px 0;
+}
+
+
+.card-sucesso {
+    background-color: var(--branco);
+
+    width: 100%;
+    max-width: 700px;
+
+    padding: 45px;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+.icone-sucesso {
+    width: 75px;
+    height: 75px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--vermelho-principal);
+    color: var(--branco);
+
+    border-radius: 50%;
+
+    font-size: 38px;
+    font-weight: bold;
+}
+
+
+.card-sucesso h2 {
+    font-size: 32px;
+
+    margin: 10px 0 10px;
+}
+
+
+.mensagem-sucesso {
+    color: var(--cinza);
+
+    margin-bottom: 30px;
+}
+
+
+.detalhes-pedido {
+    text-align: left;
+
+    margin-bottom: 25px;
+}
+
+
+.biometria-sucesso {
+    background-color: #f7f7f7;
+
+    border-left: 4px solid var(--vermelho-principal);
+
+    padding: 15px;
+
+    margin-bottom: 30px;
+
+    border-radius: 6px;
+
+    font-weight: bold;
+}
+
+
+.acoes-sucesso {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+
+.botao-secundario {
+    display: inline-block;
+
+    background-color: var(--branco);
+    color: var(--vermelho-principal);
+
+    border: 2px solid var(--vermelho-principal);
+
+    padding: 13px 26px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+
+.botao-secundario:hover {
+    background-color: #fff1f1;
+}
+
+/* =========================
+   MEUS PEDIDOS
+========================= */
+
+.lista-pedidos {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.card-pedido {
+    background-color: var(--branco);
+
+    padding: 30px;
+
+    border-radius: 14px;
+
+    border-left: 5px solid var(--vermelho-principal);
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+.pedido-topo {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 20px;
+
+    padding-bottom: 25px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.numero-pedido {
+    color: var(--vermelho-principal);
+
+    font-size: 12px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 7px;
+}
+
+
+.pedido-topo h3 {
+    font-size: 24px;
+}
+
+
+.status-verificado {
+    background-color: #eef8f0;
+    color: #237a3b;
+
+    padding: 9px 14px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+
+.status-pendente {
+    background-color: #fff4e5;
+    color: #9a5b00;
+
+    padding: 9px 14px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+
+.pedido-detalhes {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(150px, 1fr));
+
+    gap: 25px;
+
+    padding-top: 25px;
+}
+
+
+.pedido-detalhes div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+.pedido-detalhes span {
+    color: var(--cinza);
+
+    font-size: 13px;
+}
+
+
+.pedido-detalhes strong {
+    font-size: 16px;
+}
+
+
+.sem-pedidos {
+    background-color: var(--branco);
+
+    padding: 50px;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+.sem-pedidos p {
+    color: var(--cinza);
+
+    margin: 10px 0 30px;
+}
+
+.usuario-logado {
+    color: var(--branco);
+    font-weight: normal;
+}
+
+/* =========================
+   LOGIN E AUTENTICAÇÃO
+========================= */
+
+.pagina-autenticacao {
+    display: flex;
+    justify-content: center;
+
+    padding: 30px 0;
+}
+
+
+.card-autenticacao {
+    background-color: var(--branco);
+
+    width: 100%;
+    max-width: 480px;
+
+    padding: 40px;
+
+    border-radius: 14px;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+.card-autenticacao h2 {
+    font-size: 34px;
+
+    margin-bottom: 10px;
+}
+
+
+.texto-autenticacao {
+    color: var(--cinza);
+
+    line-height: 1.5;
+
+    margin-bottom: 30px;
+}
+
+
+.form-autenticacao {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.campo-formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+.campo-formulario label {
+    font-weight: bold;
+}
+
+
+.campo-formulario input {
+    width: 100%;
+
+    padding: 14px;
+
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+
+    font-size: 16px;
+}
+
+
+.campo-formulario input:focus {
+    outline: none;
+
+    border-color: var(--vermelho-principal);
+}
+
+
+.botao-autenticacao {
+    width: 100%;
+
+    border: none;
+    cursor: pointer;
+
+    font-size: 16px;
+
+    margin-top: 5px;
+}
+
+
+.mensagem-erro {
+    background-color: #fff1f1;
+    color: var(--vermelho-escuro);
+
+    border-left: 4px solid var(--vermelho-principal);
+
+    padding: 12px;
+
+    border-radius: 6px;
+
+    margin-bottom: 20px;
+}
+
+
+.rodape-autenticacao {
+    text-align: center;
+
+    border-top: 1px solid #eeeeee;
+
+    margin-top: 30px;
+    padding-top: 25px;
+}
+
+
+.rodape-autenticacao p {
+    color: var(--cinza);
+
+    margin-bottom: 8px;
+}
+
+
+.rodape-autenticacao a {
+    color: var(--vermelho-principal);
+
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+.rodape-autenticacao a:hover {
+    text-decoration: underline;
+}
+/* =========================
+   CADASTRO
+========================= */
+
+.campo-formulario ul {
+    margin: 8px 0 0 18px;
+
+    color: var(--cinza);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+.erro-campo {
+    color: var(--vermelho-principal);
+
+    font-size: 13px;
+
+    margin-top: 5px;
+}
+
+
+.erro-campo ul {
+    color: var(--vermelho-principal);
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 768px) {
+
+    /* Cabeçalho */
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+
+        padding: 20px;
+        gap: 20px;
+    }
+
+
+    header h1 {
+        font-size: 24px;
+    }
+
+
+    nav {
+        width: 100%;
+
+        flex-wrap: wrap;
+
+        gap: 15px;
+    }
+
+
+    nav a,
+    .usuario-logado {
+        font-size: 14px;
+    }
+
+
+    /* Conteúdo */
+
+    main {
+        width: 92%;
+
+        margin: 25px auto;
+    }
+
+
+    /* Home */
+
+    .hero {
+        min-height: auto;
+
+        padding: 35px 25px;
+    }
+
+
+    .hero h2 {
+        font-size: 34px;
+    }
+
+
+    .hero-texto {
+        font-size: 17px;
+    }
+
+
+    /* Títulos */
+
+    .titulo-pagina h2 {
+        font-size: 30px;
+    }
+
+
+    /* Cards */
+
+    .lista-jogos,
+    .lista-setores {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Compra */
+
+    .card-compra,
+    .card-resumo,
+    .card-verificacao,
+    .card-sucesso,
+    .card-autenticacao {
+        padding: 25px;
+    }
+
+
+    /* Meus pedidos */
+
+    .pedido-topo {
+        flex-direction: column;
+    }
+
+
+    .pedido-detalhes {
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    /* Botões da tela de sucesso */
+
+    .acoes-sucesso {
+        flex-direction: column;
+    }
+
+
+    .acoes-sucesso a {
+        width: 100%;
+
+        text-align: center;
+    }
+
+}
+
+/* =========================
+   MENU MOBILE
+========================= */
+
+.botao-menu {
+    display: none;
+
+    background: none;
+    border: none;
+
+    color: var(--branco);
+
+    font-size: 30px;
+
+    cursor: pointer;
+}
+@media (max-width: 768px) {
+
+    header {
+        position: relative;
+
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        flex-wrap: wrap;
+    }
+
+
+    .botao-menu {
+        display: block;
+    }
+
+
+    nav {
+        display: none;
+
+        width: 100%;
+
+        flex-direction: column;
+
+        gap: 0;
+
+        padding-top: 15px;
+    }
+
+
+    nav.menu-aberto {
+        display: flex;
+    }
+
+
+    nav a,
+    .usuario-logado {
+        width: 100%;
+
+        padding: 14px 0;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+}

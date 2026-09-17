@@ -1,46 +1,107 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ingressos/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Meus Pedidos</title>
-</head>
+{% block title %}
+Meus Pedidos | Ingressos Náutico
+{% endblock %}
 
-<body>
 
-    <h1>Meus Pedidos</h1>
+{% block content %}
 
-    <p>Olá, {{ user.username }}!</p>
+<section class="pagina-pedidos">
 
-    {% for pedido in pedidos %}
+    <div class="titulo-pagina">
+        <p class="hero-destaque">MINHA CONTA</p>
+        <h2>Meus Pedidos</h2>
+        <p>Acompanhe os ingressos que você já comprou.</p>
+    </div>
 
-        <h2>Pedido #{{ pedido.id }}</h2>
 
-        <p>Jogo: {{ pedido.setor.jogo }}</p>
+    <div class="lista-pedidos">
 
-        <p>Setor: {{ pedido.setor.nome }}</p>
+        {% for pedido in pedidos %}
 
-        <p>Quantidade: {{ pedido.quantidade }}</p>
+            <div class="card-pedido">
 
-        <p>Total: R$ {{ pedido.valor_total }}</p>
+                <div class="pedido-topo">
 
-        <p>
-            Data da compra:
-            {{ pedido.data_compra|date:"d/m/Y H:i" }}
-        </p>
+                    <div>
+                        <p class="numero-pedido">
+                            PEDIDO #{{ pedido.id }}
+                        </p>
 
-        <hr>
+                        <h3>
+                            {{ pedido.setor.jogo }}
+                        </h3>
+                    </div>
 
-    {% empty %}
+                    {% if pedido.biometria_verificada %}
 
-        <p>Você ainda não possui pedidos.</p>
+                        <span class="status-verificado">
+                            ✓ Identidade verificada
+                        </span>
 
-    {% endfor %}
+                    {% else %}
 
-    <a href="{% url 'home' %}">
-        <button>Voltar para o início</button>
-    </a>
+                        <span class="status-pendente">
+                            Verificação pendente
+                        </span>
 
-</body>
+                    {% endif %}
 
-</html>
+                </div>
+
+
+                <div class="pedido-detalhes">
+
+                    <div>
+                        <span>Setor</span>
+                        <strong>{{ pedido.setor.nome }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Quantidade</span>
+                        <strong>{{ pedido.quantidade }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Valor total</span>
+                        <strong>R$ {{ pedido.valor_total }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Data da compra</span>
+                        <strong>
+                            {{ pedido.data_compra|date:"d/m/Y H:i" }}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="sem-pedidos">
+
+                <h3>Você ainda não possui pedidos.</h3>
+
+                <p>
+                    Escolha uma partida e garanta seu ingresso.
+                </p>
+
+                <a
+                    href="{% url 'jogos' %}"
+                    class="botao-principal"
+                >
+                    Ver próximos jogos
+                </a>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

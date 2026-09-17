@@ -1,29 +1,86 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ingressos/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Compra finalizada</title>
-</head>
+{% block title %}
+Compra realizada | Ingressos Náutico
+{% endblock %}
 
-<body>
 
-    <h1>Compra realizada com sucesso!</h1>
+{% block content %}
 
-    <h2>{{ pedido.setor.jogo }}</h2>
+<section class="pagina-sucesso">
 
-    <p>Setor: {{ pedido.setor.nome }}</p>
+    <div class="card-sucesso">
 
-    <p>Quantidade: {{ pedido.quantidade }}</p>
+        <div class="icone-sucesso">
+            ✓
+        </div>
 
-    <p>Total: R$ {{ pedido.valor_total }}</p>
+        <p class="hero-destaque">
+            PEDIDO CONFIRMADO
+        </p>
 
-    <p>Número do pedido: {{ pedido.id }}</p>
+        <h2>Compra realizada com sucesso!</h2>
 
-    <a href="{% url 'jogos' %}">
-        <button>Voltar para os jogos</button>
-    </a>
+        <p class="mensagem-sucesso">
+            Seu ingresso foi registrado com sucesso.
+        </p>
 
-</body>
 
-</html>
+        <div class="detalhes-pedido">
+
+            <div class="resumo-item">
+                <span>Partida</span>
+                <strong>{{ pedido.setor.jogo }}</strong>
+            </div>
+
+            <div class="resumo-item">
+                <span>Setor</span>
+                <strong>{{ pedido.setor.nome }}</strong>
+            </div>
+
+            <div class="resumo-item">
+                <span>Quantidade</span>
+                <strong>{{ pedido.quantidade }}</strong>
+            </div>
+
+            <div class="resumo-item">
+                <span>Total</span>
+                <strong>R$ {{ pedido.valor_total }}</strong>
+            </div>
+
+            <div class="resumo-item">
+                <span>Número do pedido</span>
+                <strong>#{{ pedido.id }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="biometria-sucesso">
+            ✓ Identidade verificada
+        </div>
+
+
+        <div class="acoes-sucesso">
+
+            <a
+                href="{% url 'meus_pedidos' %}"
+                class="botao-principal"
+            >
+                Meus pedidos
+            </a>
+
+            <a
+                href="{% url 'jogos' %}"
+                class="botao-secundario"
+            >
+                Voltar para os jogos
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

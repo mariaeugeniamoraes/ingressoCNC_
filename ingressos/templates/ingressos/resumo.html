@@ -1,28 +1,69 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ingressos/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Resumo do pedido</title>
-</head>
+{% block title %}
+Resumo do pedido | Ingressos Náutico
+{% endblock %}
 
-<body>
 
-    <h1>Resumo do pedido</h1>
+{% block content %}
 
-    <h2>{{ setor.jogo }}</h2>
+<section class="pagina-resumo">
 
-    <p>Setor: {{ setor.nome }}</p>
+    <div class="titulo-pagina">
+        <p class="hero-destaque">QUASE LÁ</p>
+        <h2>Resumo do pedido</h2>
+        <p>Confira as informações antes de finalizar sua compra.</p>
+    </div>
 
-    <p>Preço unitário: R$ {{ setor.preco }}</p>
 
-    <p>Quantidade: {{ quantidade }}</p>
+    <div class="card-resumo">
 
-    <hr>
+        <div class="resumo-jogo">
 
-    <h2>Total: R$ {{ total }}</h2>
+            <p class="label-compra">PARTIDA</p>
 
-    <form action="{% url 'finalizar_compra' setor.id %}" method="POST">
+            <h3>{{ setor.jogo }}</h3>
+
+        </div>
+
+
+        <div class="resumo-informacoes">
+
+            <div class="resumo-item">
+                <span>Setor</span>
+                <strong>{{ setor.nome }}</strong>
+            </div>
+
+
+            <div class="resumo-item">
+                <span>Preço unitário</span>
+                <strong>R$ {{ setor.preco }}</strong>
+            </div>
+
+
+            <div class="resumo-item">
+                <span>Quantidade</span>
+                <strong>{{ quantidade }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="resumo-total">
+
+            <span>Total</span>
+
+            <strong>
+                R$ {{ total }}
+            </strong>
+
+        </div>
+
+
+        <form
+    action="{% url 'verificacao_facial' setor.id %}"
+    method="POST"
+>
 
     {% csrf_token %}
 
@@ -32,9 +73,17 @@
         value="{{ quantidade }}"
     >
 
-    <button type="submit">Finalizar compra</button>
+    <button
+        type="submit"
+        class="botao-principal botao-finalizar"
+    >
+        Continuar para verificação
+    </button>
 
 </form>
-</body>
 
-</html>
+    </div>
+
+</section>
+
+{% endblock %}

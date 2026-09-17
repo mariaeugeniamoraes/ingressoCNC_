@@ -1,39 +1,77 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ingressos/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Próximos Jogos</title>
-</head>
+{% block title %}
+Jogos | Ingressos Náutico
+{% endblock %}
 
-<body>
 
-    <h1>Próximos Jogos</h1>
+{% block content %}
 
-    <p>Escolha uma partida para comprar seu ingresso.</p>
+<section class="pagina-jogos">
 
-    {% for jogo in jogos %}
+    <div class="titulo-pagina">
+        <p class="hero-destaque">PARTIDAS</p>
+        <h2>Próximos Jogos</h2>
+        <p>Escolha uma partida para comprar seu ingresso.</p>
+    </div>
 
-        <h2>Náutico x {{ jogo.adversario }}</h2>
 
-        <p>Data: {{ jogo.data|date:"d/m/Y" }}</p>
+    <div class="lista-jogos">
 
-        <p>Horário: {{ jogo.horario|time:"H:i" }}</p>
+        {% for jogo in jogos %}
 
-        <p>Local: {{ jogo.estadio }}</p>
+            <div class="card-jogo">
 
-       <a href="{% url 'comprar' jogo.id %}">
-           <button>Comprar ingresso</button>
-       </a> 
+                <div class="card-jogo-topo">
+                    <span>PRÓXIMO JOGO</span>
+                </div>
 
-        <hr>
+                <div class="card-jogo-conteudo">
 
-    {% empty %}
+                    <h3>
+                        Náutico <span class="versus">x</span>
+                        {{ jogo.adversario }}
+                    </h3>
 
-        <p>Nenhum jogo disponível no momento.</p>
+                    <div class="informacoes-jogo">
 
-    {% endfor %}
+                        <p>
+                            <strong>Data</strong><br>
+                            {{ jogo.data|date:"d/m/Y" }}
+                        </p>
 
-</body>
+                        <p>
+                            <strong>Horário</strong><br>
+                            {{ jogo.horario|time:"H:i" }}
+                        </p>
 
-</html>
+                        <p>
+                            <strong>Local</strong><br>
+                            {{ jogo.estadio }}
+                        </p>
+
+                    </div>
+
+                    <a href="{% url 'comprar' jogo.id %}"
+                       class="botao-principal">
+                        Comprar ingresso
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% empty %}
+
+            <div class="sem-jogos">
+                <h3>Nenhum jogo disponível</h3>
+                <p>Não há partidas cadastradas no momento.</p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}
