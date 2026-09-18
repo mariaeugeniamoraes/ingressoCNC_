@@ -1601,3 +1601,278 @@ main {
     }
 
 }
+
+/* =========================
+   PERFIL DO USUÁRIO
+========================= */
+
+.pagina-perfil {
+    width: 100%;
+}
+
+
+/* Container principal */
+
+.perfil-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+
+/* =========================
+   CARD DO USUÁRIO
+========================= */
+
+.card-perfil {
+    background-color: var(--branco);
+
+    padding: 30px;
+
+    border-radius: 14px;
+    border-left: 5px solid var(--vermelho-principal);
+
+    display: flex;
+    align-items: center;
+    gap: 22px;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Círculo com a inicial do usuário */
+
+.avatar-perfil {
+    width: 75px;
+    height: 75px;
+
+    min-width: 75px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--vermelho-principal);
+    color: var(--branco);
+
+    border-radius: 50%;
+
+    font-size: 32px;
+    font-weight: bold;
+}
+
+
+/* Informações do usuário */
+
+.dados-perfil {
+    display: flex;
+    flex-direction: column;
+}
+
+.label-perfil {
+    color: var(--vermelho-principal);
+
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+
+    margin-bottom: 5px;
+}
+
+.dados-perfil h3 {
+    font-size: 27px;
+    margin-bottom: 5px;
+}
+
+.dados-perfil p {
+    color: var(--cinza);
+}
+
+
+/* =========================
+   ESTATÍSTICAS
+========================= */
+
+.resumo-perfil {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+
+/* Card da estatística */
+
+.card-estatistica {
+    background-color: var(--branco);
+
+    padding: 28px;
+
+    border-radius: 14px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Número grande */
+
+.numero-estatistica {
+    color: var(--vermelho-principal);
+
+    font-size: 36px;
+    font-weight: bold;
+}
+
+
+/* Texto abaixo do número */
+
+.texto-estatistica {
+    color: var(--cinza);
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   ATALHOS DO PERFIL
+========================= */
+
+.acoes-perfil {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+
+/* Cards dos atalhos */
+
+.card-acao-perfil {
+    background-color: var(--branco);
+
+    padding: 30px;
+
+    border-radius: 14px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    min-height: 230px;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+
+.card-acao-perfil:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.11);
+}
+
+
+/* Ícone */
+
+.icone-acao-perfil {
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #fff1f1;
+
+    border-radius: 12px;
+
+    font-size: 24px;
+
+    margin-bottom: 18px;
+}
+
+
+/* Título */
+
+.card-acao-perfil h3 {
+    font-size: 22px;
+
+    margin-bottom: 10px;
+}
+
+
+/* Descrição */
+
+.card-acao-perfil p {
+    color: var(--cinza);
+
+    line-height: 1.5;
+}
+
+
+/* Botões dentro dos cards */
+
+.card-acao-perfil .botao-principal,
+.card-acao-perfil .botao-secundario {
+    align-self: flex-start;
+}
+
+
+/* =========================
+   PERFIL RESPONSIVO
+========================= */
+
+@media (max-width: 768px) {
+
+    .card-perfil {
+        padding: 25px;
+
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+
+    .avatar-perfil {
+        width: 65px;
+        height: 65px;
+
+        min-width: 65px;
+
+        font-size: 28px;
+    }
+
+
+    .resumo-perfil {
+        grid-template-columns: 1fr;
+    }
+
+
+    .acoes-perfil {
+        grid-template-columns: 1fr;
+    }
+
+
+    .card-acao-perfil {
+        min-height: auto;
+        padding: 25px;
+    }
+
+
+    .card-acao-perfil .botao-principal,
+    .card-acao-perfil .botao-secundario {
+        width: 100%;
+        text-align: center;
+    }
+
+}

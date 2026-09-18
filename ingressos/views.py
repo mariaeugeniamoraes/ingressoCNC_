@@ -326,3 +326,22 @@ def validar_ingresso(request, codigo):
         'ingressos/validar_ingresso.html',
         {'pedido': pedido}
     )
+
+@login_required(login_url='login')
+def perfil(request):
+
+    pedidos = Pedido.objects.filter(
+        usuario=request.user
+    ).order_by('-data_compra')
+
+    total_pedidos = pedidos.count()
+
+    ingressos_comprados = sum(
+        pedido.quantidade for pedido in pedidos
+    )
+
+    return render(request, 'ingressos/perfil.html', {
+        'pedidos': pedidos,
+        'total_pedidos': total_pedidos,
+        'ingressos_comprados': ingressos_comprados,
+    })

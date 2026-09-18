@@ -1,83 +1,104 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}Ingressos Náutico{% endblock %}</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="{% static 'ingressos/css/style.css' %}">
+    <title>
+        {% block title %}
+        Ingressos Náutico
+        {% endblock %}
+    </title>
 
-    {% block extra_head %}{% endblock %}
+    <link
+        rel="stylesheet"
+        href="{% static 'ingressos/css/style.css' %}"
+    >
+
+    {% block extra_head %}
+    {% endblock %}
+
 </head>
+
 
 <body>
 
-   <header>
+    <header>
 
-    <h1>Ingressos Náutico</h1>
-
-    <button
-        class="botao-menu"
-        id="botao-menu"
-        type="button"
-        aria-label="Abrir menu"
-        aria-expanded="false"
-    >
-        ☰
-    </button>
+        <h1>
+            Ingressos Náutico
+        </h1>
 
 
-    <nav id="menu">
+        <!-- Botão do menu para celular -->
+        <button
+            class="botao-menu"
+            id="botao-menu"
+            type="button"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+        >
+            ☰
+        </button>
 
-        <a href="{% url 'home' %}">
-            Início
-        </a>
 
-        <a href="{% url 'jogos' %}">
-            Jogos
-        </a>
+        <nav id="menu">
 
-
-        {% if user.is_authenticated %}
-
-            <span class="usuario-logado">
-                Olá, {{ user.username }}
-            </span>
-
-            <a href="{% url 'meus_pedidos' %}">
-                Meus Pedidos
+            <a href="{% url 'home' %}">
+                Início
             </a>
 
-            <a href="{% url 'logout' %}">
-                Sair
+            <a href="{% url 'jogos' %}">
+                Jogos
             </a>
 
-        {% else %}
 
-            <a href="{% url 'login' %}">
-                Entrar
-            </a>
+            {% if user.is_authenticated %}
 
-            <a href="{% url 'cadastro' %}">
-                Criar conta
-            </a>
+                <a href="{% url 'perfil' %}">
+                    Meu Perfil
+                </a>
 
-        {% endif %}
+                <a href="{% url 'meus_pedidos' %}">
+                    Meus Pedidos
+                </a>
 
-    </nav>
+                <a href="{% url 'logout' %}">
+                    Sair
+                </a>
 
-</header>
+            {% else %}
+
+                <a href="{% url 'login' %}">
+                    Entrar
+                </a>
+
+                <a href="{% url 'cadastro' %}">
+                    Criar conta
+                </a>
+
+            {% endif %}
+
+        </nav>
+
+    </header>
+
 
     <main>
 
         {% block content %}
-
         {% endblock %}
 
     </main>
+
 
     <script>
 
@@ -91,19 +112,40 @@
             const menuEstaAberto =
                 menu.classList.contains("menu-aberto");
 
+
             if (menuEstaAberto) {
-            botaoMenu.textContent = "✕";
-            botaoMenu.setAttribute("aria-expanded", "true");
-            botaoMenu.setAttribute("aria-label", "Fechar menu");
+
+                botaoMenu.textContent = "✕";
+
+                botaoMenu.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+                botaoMenu.setAttribute(
+                    "aria-label",
+                    "Fechar menu"
+                );
+
             } else {
-            botaoMenu.textContent = "☰";
-            botaoMenu.setAttribute("aria-expanded", "false");
-            botaoMenu.setAttribute("aria-label", "Abrir menu");
+
+                botaoMenu.textContent = "☰";
+
+                botaoMenu.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                botaoMenu.setAttribute(
+                    "aria-label",
+                    "Abrir menu"
+                );
+
             }
 
-    });
+        });
 
- </script>
+    </script>
 
 </body>
 

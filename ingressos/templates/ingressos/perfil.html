@@ -1,0 +1,137 @@
+{% extends 'ingressos/base.html' %}
+
+{% block title %}
+Meu Perfil | Ingressos Náutico
+{% endblock %}
+
+{% block content %}
+
+<section class="pagina-perfil">
+
+    <div class="titulo-pagina">
+        <p class="hero-destaque">MINHA CONTA</p>
+        <h2>Meu Perfil</h2>
+        <p>Veja as informações da sua conta e acompanhe seus ingressos.</p>
+    </div>
+
+
+    <div class="perfil-container">
+
+        <!-- Informações do usuário -->
+        <div class="card-perfil">
+
+            <div class="avatar-perfil">
+                {{ user.username|first|upper }}
+            </div>
+
+            <div class="dados-perfil">
+
+                <span class="label-perfil">
+                    USUÁRIO
+                </span>
+
+                <h3>{{ user.username }}</h3>
+
+                {% if user.email %}
+
+                    <p>
+                        {{ user.email }}
+                    </p>
+
+                {% else %}
+
+                    <p>
+                        E-mail não informado
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Resumo da conta -->
+        <div class="resumo-perfil">
+
+            <div class="card-estatistica">
+
+                <span class="numero-estatistica">
+                    {{ total_pedidos }}
+                </span>
+
+                <span class="texto-estatistica">
+                    Pedidos realizados
+                </span>
+
+            </div>
+
+
+            <div class="card-estatistica">
+
+                <span class="numero-estatistica">
+                    {{ ingressos_comprados }}
+                </span>
+
+                <span class="texto-estatistica">
+                    Ingressos comprados
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Ações -->
+        <div class="acoes-perfil">
+
+            <div class="card-acao-perfil">
+
+                <div>
+                    <span class="icone-acao-perfil">🎟️</span>
+
+                    <h3>Meus ingressos</h3>
+
+                    <p>
+                        Consulte suas compras e acesse seus ingressos digitais.
+                    </p>
+                </div>
+
+                <a
+                    href="{% url 'meus_pedidos' %}"
+                    class="botao-principal"
+                >
+                    Ver meus pedidos
+                </a>
+
+            </div>
+
+
+            <div class="card-acao-perfil">
+
+                <div>
+                    <span class="icone-acao-perfil">⚽</span>
+
+                    <h3>Próximos jogos</h3>
+
+                    <p>
+                        Veja as próximas partidas disponíveis para compra.
+                    </p>
+                </div>
+
+                <a
+                    href="{% url 'jogos' %}"
+                    class="botao-secundario"
+                >
+                    Ver jogos
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
