@@ -14,6 +14,12 @@ urlpatterns = [
         name='verificacao_facial'
     ),
 
+    path(
+        'pagamento/<int:setor_id>/',
+        views.pagamento,
+        name='pagamento'
+    ),
+
     path('finalizar/<int:setor_id>/', views.finalizar_compra, name='finalizar_compra'),
     path('cadastro/', views.cadastro, name='cadastro'),
     path('login/', views.entrar, name='login'),

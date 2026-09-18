@@ -3,12 +3,16 @@ from django.contrib.auth.models import User
 
 
 class Jogo(models.Model):
+
     adversario = models.CharField(max_length=100)
+
     data = models.DateField()
+
     horario = models.TimeField(
         null=True,
         blank=True
     )
+
     estadio = models.CharField(max_length=100)
 
     def __str__(self):
@@ -16,29 +20,80 @@ class Jogo(models.Model):
 
 
 class Setor(models.Model):
-    jogo = models.ForeignKey(Jogo, on_delete=models.CASCADE)
+
+    jogo = models.ForeignKey(
+        Jogo,
+        on_delete=models.CASCADE
+    )
+
     nome = models.CharField(max_length=100)
-    preco = models.DecimalField(max_digits=8, decimal_places=2)
+
+    preco = models.DecimalField(
+        max_digits=8,
+        decimal_places=2
+    )
+
     quantidade = models.PositiveIntegerField()
 
     def __str__(self):
         return f"{self.nome} - {self.jogo}"
 
+
 class Pedido(models.Model):
+
     usuario = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         null=True,
         blank=True
     )
-    setor = models.ForeignKey(Setor, on_delete=models.CASCADE)
+
+    setor = models.ForeignKey(
+        Setor,
+        on_delete=models.CASCADE
+    )
+
     quantidade = models.PositiveIntegerField()
-    valor_total = models.DecimalField(max_digits=10, decimal_places=2)
-    data_compra = models.DateTimeField(auto_now_add=True)
-    
-    biometria_verificada = models.BooleanField(default=False)
+
+    valor_total = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+
+    data_compra = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    biometria_verificada = models.BooleanField(
+        default=False
+    )
+
+    # FORMAS DE PAGAMENTO
+
+    FORMAS_PAGAMENTO = [
+        ("pix", "PIX"),
+        ("credito", "Cartão de crédito"),
+        ("debito", "Cartão de débito"),
+    ]
+
+    forma_pagamento = models.CharField(
+        max_length=20,
+        choices=FORMAS_PAGAMENTO,
+        blank=True
+    )
+
+    # STATUS DO PAGAMENTO
+
+    STATUS_PAGAMENTO = [
+        ("pendente", "Pendente"),
+        ("pago", "Pago"),
+    ]
+
+    status_pagamento = models.CharField(
+        max_length=20,
+        choices=STATUS_PAGAMENTO,
+        default="pendente"
+    )
 
     def __str__(self):
         return f"Pedido {self.id} - {self.setor}"
-
-# Create your models here.

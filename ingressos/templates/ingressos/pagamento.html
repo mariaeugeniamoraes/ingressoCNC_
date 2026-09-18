@@ -1,0 +1,165 @@
+{% extends 'ingressos/base.html' %}
+
+{% block title %}
+Pagamento | Ingressos Náutico
+{% endblock %}
+
+{% block content %}
+
+<section class="pagina-pagamento">
+
+    <div class="cabecalho-pagamento">
+        <span class="etapa-pagamento">PAGAMENTO</span>
+        <h1>Finalize seu pedido</h1>
+        <p>Revise seu ingresso e escolha uma forma de pagamento.</p>
+    </div>
+
+    <div class="checkout-container">
+
+        <!-- RESUMO -->
+        <div class="card-resumo-checkout">
+
+            <div class="titulo-card-checkout">
+                <span class="icone-checkout">🎟️</span>
+
+                <div>
+                    <span class="mini-titulo">SEU INGRESSO</span>
+                    <h2>Resumo do pedido</h2>
+                </div>
+            </div>
+
+            <div class="linha-resumo">
+                <span>Jogo</span>
+                <strong>Náutico x {{ setor.jogo.adversario }}</strong>
+            </div>
+
+            <div class="linha-resumo">
+                <span>Setor</span>
+                <strong>{{ setor.nome }}</strong>
+            </div>
+
+            <div class="linha-resumo">
+                <span>Quantidade</span>
+                <strong>{{ quantidade }}</strong>
+            </div>
+
+            <div class="linha-total">
+                <div>
+                    <span>Total</span>
+                    <small>Valor da compra</small>
+                </div>
+
+                <strong>R$ {{ total }}</strong>
+            </div>
+
+        </div>
+
+
+        <!-- PAGAMENTO -->
+        <div class="card-forma-pagamento">
+
+            <span class="mini-titulo">FORMA DE PAGAMENTO</span>
+            <h2>Como deseja pagar?</h2>
+
+            <form
+                action="{% url 'finalizar_compra' setor.id %}"
+                method="POST"
+            >
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="quantidade"
+                    value="{{ quantidade }}"
+                >
+
+                <div class="opcoes-pagamento">
+
+                    <label class="opcao-pagamento">
+                        <input
+                            type="radio"
+                            name="forma_pagamento"
+                            value="pix"
+                            required
+                        >
+
+                        <div class="conteudo-opcao">
+                            <div class="icone-pagamento">◆</div>
+
+                            <div>
+                                <strong>PIX</strong>
+                                <span>Pagamento instantâneo</span>
+                            </div>
+                        </div>
+                    </label>
+
+
+                    <label class="opcao-pagamento">
+                        <input
+                            type="radio"
+                            name="forma_pagamento"
+                            value="credito"
+                            required
+                        >
+
+                        <div class="conteudo-opcao">
+                            <div class="icone-pagamento">💳</div>
+
+                            <div>
+                                <strong>Cartão de crédito</strong>
+                                <span>Pagamento simulado</span>
+                            </div>
+                        </div>
+                    </label>
+
+
+                    <label class="opcao-pagamento">
+                        <input
+                            type="radio"
+                            name="forma_pagamento"
+                            value="debito"
+                            required
+                        >
+
+                        <div class="conteudo-opcao">
+                            <div class="icone-pagamento">💳</div>
+
+                            <div>
+                                <strong>Cartão de débito</strong>
+                                <span>Pagamento simulado</span>
+                            </div>
+                        </div>
+                    </label>
+
+                </div>
+
+
+                <div class="aviso-simulacao">
+                    <span>🔒</span>
+
+                    <p>
+                        <strong>Ambiente de demonstração</strong>
+                        Este pagamento é apenas uma simulação acadêmica.
+                        Não informe dados bancários reais.
+                    </p>
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="botao-confirmar-pagamento"
+                >
+                    Confirmar pagamento
+                    <span>→</span>
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

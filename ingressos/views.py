@@ -66,34 +66,93 @@ def resumo(request, setor_id):
 
 @login_required(login_url='login')
 def finalizar_compra(request, setor_id):
-    setor = get_object_or_404(Setor, id=setor_id)
 
-    quantidade = int(request.POST.get('quantidade', 1))
+    setor = get_object_or_404(
+        Setor,
+        id=setor_id
+    )
 
+    # A finalização só pode acontecer por POST
+    if request.method != 'POST':
+        return redirect('jogos')
+
+    quantidade = int(
+        request.POST.get('quantidade', 1)
+    )
+
+    forma_pagamento = request.POST.get(
+        'forma_pagamento'
+    )
+
+    # Verifica se a quantidade é válida
     if quantidade < 1 or quantidade > setor.quantidade:
+
         return render(
             request,
             'ingressos/erro_compra.html',
-            {'mensagem': 'Quantidade de ingressos inválida.'}
+            {
+                'mensagem':
+                'Quantidade de ingressos inválida.'
+            }
         )
 
+    # Formas de pagamento aceitas na simulação
+    formas_validas = [
+        'pix',
+        'credito',
+        'debito'
+    ]
+
+    # Verifica se o usuário escolheu
+    # uma forma de pagamento válida
+    if forma_pagamento not in formas_validas:
+
+        return render(
+            request,
+            'ingressos/erro_compra.html',
+            {
+                'mensagem':
+                'Selecione uma forma de pagamento válida.'
+            }
+        )
+
+    # Calcula novamente no servidor.
+    # Não confiamos no valor enviado pelo navegador.
     total = setor.preco * quantidade
 
+    # Cria o pedido
     pedido = Pedido.objects.create(
-    usuario=request.user,
-    setor=setor,
-    quantidade=quantidade,
-    valor_total=total,
-    biometria_verificada=True
-)
 
-    setor.quantidade = setor.quantidade - quantidade
+        usuario=request.user,
+
+        setor=setor,
+
+        quantidade=quantidade,
+
+        valor_total=total,
+
+        biometria_verificada=True,
+
+        forma_pagamento=forma_pagamento,
+
+        status_pagamento='pago'
+
+    )
+
+    # Desconta os ingressos vendidos
+    setor.quantidade = (
+        setor.quantidade - quantidade
+    )
+
     setor.save()
 
+    # Exibe a confirmação
     return render(
         request,
         'ingressos/compra_finalizada.html',
-        {'pedido': pedido}
+        {
+            'pedido': pedido
+        }
     )
 
 def cadastro(request):
@@ -177,6 +236,35 @@ def verificacao_facial(request, setor_id):
         {
             'setor': setor,
             'quantidade': quantidade
+        }
+    )
+
+@login_required(login_url='login')
+def pagamento(request, setor_id):
+
+    setor = get_object_or_404(Setor, id=setor_id)
+
+    quantidade = int(request.POST.get('quantidade', 1))
+
+    if quantidade < 1 or quantidade > setor.quantidade:
+
+        return render(
+            request,
+            'ingressos/erro_compra.html',
+            {
+                'mensagem': 'Quantidade de ingressos inválida.'
+            }
+        )
+
+    total = setor.preco * quantidade
+
+    return render(
+        request,
+        'ingressos/pagamento.html',
+        {
+            'setor': setor,
+            'quantidade': quantidade,
+            'total': total
         }
     )
 # Create your views here.
