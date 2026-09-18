@@ -1,0 +1,231 @@
+/* =========================
+   INGRESSO DIGITAL
+========================= */
+
+.ingresso {
+    max-width: 780px;
+    margin: 0 auto;
+
+    background-color: var(--branco);
+    border-radius: 16px;
+    overflow: hidden;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.ingresso-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: var(--vermelho-principal);
+    color: var(--branco);
+
+    padding: 14px 30px;
+
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.ingresso-corpo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 30px;
+    align-items: center;
+
+    padding: 30px;
+}
+
+.ingresso-dados h3 {
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.ingresso-data {
+    color: var(--cinza);
+    margin-bottom: 25px;
+}
+
+/* Setor, quantidade, torcedor e valor */
+.ingresso-grade {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.ingresso-grade span {
+    display: block;
+
+    color: var(--cinza);
+    font-size: 12px;
+    letter-spacing: 1px;
+
+    margin-bottom: 4px;
+}
+
+.ingresso-grade strong {
+    font-size: 18px;
+}
+
+.ingresso-selo {
+    margin-top: 25px;
+    color: #1e7b3c;
+    font-weight: bold;
+}
+
+.ingresso-selo.pendente {
+    color: #b58100;
+}
+
+/* QR Code, separado por uma linha pontilhada */
+.ingresso-qr {
+    border-left: 2px dashed #d9d9d9;
+    padding-left: 30px;
+    text-align: center;
+}
+
+.ingresso-qr svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.ingresso-instrucao {
+    margin-top: 12px;
+    color: var(--cinza);
+    font-size: 13px;
+}
+
+.ingresso-rodape {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    border-top: 1px solid #ededed;
+    padding: 16px 30px;
+
+    color: var(--cinza);
+    font-size: 12px;
+}
+
+.acoes-ingresso {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    margin-top: 30px;
+}
+
+.acoes-ingresso .botao-principal {
+    border: none;
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+
+/* =========================
+   VALIDAÇÃO NA PORTARIA
+========================= */
+
+.painel-validacao {
+    max-width: 560px;
+    margin: 0 auto;
+
+    background-color: var(--branco);
+    border-radius: 16px;
+    border-top: 8px solid;
+
+    padding: 40px;
+    text-align: center;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.painel-validacao.valido {
+    border-top-color: #1e7b3c;
+}
+
+.painel-validacao.invalido {
+    border-top-color: var(--vermelho-principal);
+}
+
+.icone-validacao {
+    font-size: 54px;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.valido .icone-validacao {
+    color: #1e7b3c;
+}
+
+.invalido .icone-validacao {
+    color: var(--vermelho-principal);
+}
+
+.painel-validacao h2 {
+    margin-bottom: 25px;
+}
+
+.mensagem-validacao {
+    color: var(--cinza);
+    line-height: 1.6;
+}
+
+.validacao-dados {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    text-align: left;
+}
+
+.validacao-dados span {
+    display: block;
+    color: var(--cinza);
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+
+/* Celular */
+@media (max-width: 720px) {
+
+    .ingresso-corpo {
+        grid-template-columns: 1fr;
+    }
+
+    .ingresso-qr {
+        border-left: none;
+        border-top: 2px dashed #d9d9d9;
+        padding-left: 0;
+        padding-top: 25px;
+
+        max-width: 240px;
+        margin: 0 auto;
+    }
+
+    .ingresso-grade,
+    .validacao-dados {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Impressão e salvar em PDF */
+@media print {
+
+    header,
+    .nao-imprimir {
+        display: none;
+    }
+
+    .ingresso {
+        box-shadow: none;
+        border: 1px solid #cccccc;
+    }
+}

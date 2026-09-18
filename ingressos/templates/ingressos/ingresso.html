@@ -1,0 +1,120 @@
+{% extends 'ingressos/base.html' %}
+{% load static %}
+
+{% block title %}
+Ingresso #{{ pedido.id }} | Ingressos Náutico
+{% endblock %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/ingresso.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<section class="pagina-ingresso">
+
+    <div class="titulo-pagina nao-imprimir">
+        <p class="hero-destaque">SEU INGRESSO</p>
+        <h2>Ingresso digital</h2>
+        <p>Apresente o QR Code na entrada do estádio.</p>
+    </div>
+
+
+    <div class="ingresso">
+
+        <div class="ingresso-topo">
+            <span>CLUBE NÁUTICO CAPIBARIBE</span>
+            <span>#{{ pedido.id }}</span>
+        </div>
+
+
+        <div class="ingresso-corpo">
+
+            <div class="ingresso-dados">
+
+                <h3>{{ pedido.setor.jogo }}</h3>
+
+                <p class="ingresso-data">
+                    {{ pedido.setor.jogo.data|date:"d/m/Y" }}
+                    {% if pedido.setor.jogo.horario %}
+                        às {{ pedido.setor.jogo.horario|time:"H:i" }}
+                    {% endif %}
+                    • {{ pedido.setor.jogo.estadio }}
+                </p>
+
+                <div class="ingresso-grade">
+
+                    <div>
+                        <span>Setor</span>
+                        <strong>{{ pedido.setor.nome }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Quantidade</span>
+                        <strong>{{ pedido.quantidade }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Torcedor</span>
+                        <strong>{{ pedido.usuario.username|default:"—" }}</strong>
+                    </div>
+
+                    <div>
+                        <span>Valor total</span>
+                        <strong>R$ {{ pedido.valor_total }}</strong>
+                    </div>
+
+                </div>
+
+                {% if pedido.biometria_verificada %}
+                    <p class="ingresso-selo">✓ Identidade verificada</p>
+                {% else %}
+                    <p class="ingresso-selo pendente">Verificação pendente</p>
+                {% endif %}
+
+            </div>
+
+
+            <div class="ingresso-qr">
+
+                <svg viewBox="0 0 {{ qr.lado }} {{ qr.lado }}"
+                     role="img"
+                     aria-label="QR Code do ingresso número {{ pedido.id }}">
+                    <rect width="{{ qr.lado }}" height="{{ qr.lado }}" fill="#ffffff"/>
+                    <path d="{{ qr.caminho }}" fill="#000000"/>
+                </svg>
+
+                <p class="ingresso-instrucao">
+                    Mostre este código na catraca
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="ingresso-rodape">
+            <span>Ingresso pessoal e intransferível</span>
+            <span>Projeto acadêmico — sem valor real</span>
+        </div>
+
+    </div>
+
+
+    <div class="acoes-ingresso nao-imprimir">
+
+        <button type="button" class="botao-principal" onclick="window.print()">
+            Salvar em PDF ou imprimir
+        </button>
+
+        <a href="{% url 'meus_pedidos' %}" class="botao-secundario">
+            Meus pedidos
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

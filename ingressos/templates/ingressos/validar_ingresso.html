@@ -1,0 +1,81 @@
+{% extends 'ingressos/base.html' %}
+{% load static %}
+
+{% block title %}
+Validação de ingresso | Ingressos Náutico
+{% endblock %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/ingresso.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<section class="pagina-validacao">
+
+    {% if pedido %}
+
+        <div class="painel-validacao valido">
+
+            <p class="icone-validacao">✓</p>
+
+            <h2>Ingresso válido</h2>
+
+            <div class="validacao-dados">
+
+                <div>
+                    <span>Pedido</span>
+                    <strong>#{{ pedido.id }}</strong>
+                </div>
+
+                <div>
+                    <span>Partida</span>
+                    <strong>{{ pedido.setor.jogo }}</strong>
+                </div>
+
+                <div>
+                    <span>Setor</span>
+                    <strong>{{ pedido.setor.nome }}</strong>
+                </div>
+
+                <div>
+                    <span>Quantidade</span>
+                    <strong>{{ pedido.quantidade }}</strong>
+                </div>
+
+                <div>
+                    <span>Torcedor</span>
+                    <strong>{{ pedido.usuario.username|default:"—" }}</strong>
+                </div>
+
+                <div>
+                    <span>Comprado em</span>
+                    <strong>{{ pedido.data_compra|date:"d/m/Y H:i" }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="painel-validacao invalido">
+
+            <p class="icone-validacao">✕</p>
+
+            <h2>Ingresso inválido</h2>
+
+            <p class="mensagem-validacao">
+                O código não foi reconhecido. Ele pode ter sido alterado,
+                ter vencido ou o pedido pode ter sido cancelado.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

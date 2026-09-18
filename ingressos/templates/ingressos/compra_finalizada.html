@@ -64,8 +64,15 @@ Compra realizada | Ingressos Náutico
         <div class="acoes-sucesso">
 
             <a
-                href="{% url 'meus_pedidos' %}"
+                href="{% url 'ingresso' pedido.id %}"
                 class="botao-principal"
+            >
+                Ver meu ingresso
+            </a>
+
+            <a
+                href="{% url 'meus_pedidos' %}"
+                class="botao-secundario"
             >
                 Meus pedidos
             </a>

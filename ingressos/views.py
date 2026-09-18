@@ -3,7 +3,10 @@ from .models import Jogo, Setor, Pedido
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from django.urls import reverse
 from .mapa_estadio import montar_mapa, CONTEXTO_FIXO
+from .ingresso_qr import gerar_codigo, ler_codigo, gerar_qr_svg
 
 def home(request):
     return render(request, 'ingressos/home.html')
@@ -268,3 +271,58 @@ def pagamento(request, setor_id):
         }
     )
 # Create your views here.
+
+
+@login_required(login_url='login')
+def ingresso(request, pedido_id):
+    """Mostra o ingresso virtual do pedido, com o QR Code."""
+
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+
+    # Só o dono do pedido (ou a equipe do clube) pode ver o ingresso
+    if pedido.usuario != request.user and not request.user.is_staff:
+        return render(
+            request,
+            'ingressos/erro_compra.html',
+            {'mensagem': 'Este ingresso pertence a outra pessoa.'}
+        )
+
+    codigo = gerar_codigo(pedido)
+
+    # Endereço completo que o QR Code vai guardar
+    endereco = request.build_absolute_uri(
+        reverse('validar_ingresso', args=[codigo])
+    )
+
+    qr = gerar_qr_svg(endereco)
+
+    return render(
+        request,
+        'ingressos/ingresso.html',
+        {
+            'pedido': pedido,
+            'codigo': codigo,
+            'endereco': endereco,
+            'qr': qr,
+        }
+    )
+
+
+@staff_member_required
+def validar_ingresso(request, codigo):
+    """
+    Página usada pela equipe do clube na portaria.
+    Lê o código do QR e diz se o ingresso é válido.
+    """
+
+    pedido_id = ler_codigo(codigo)
+
+    pedido = None
+    if pedido_id is not None:
+        pedido = Pedido.objects.filter(id=pedido_id).first()
+
+    return render(
+        request,
+        'ingressos/validar_ingresso.html',
+        {'pedido': pedido}
+    )

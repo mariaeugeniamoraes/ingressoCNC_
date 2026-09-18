@@ -77,6 +77,14 @@ Meus Pedidos | Ingressos Náutico
 
                 </div>
 
+
+                <a
+                    href="{% url 'ingresso' pedido.id %}"
+                    class="botao-principal"
+                >
+                    Ver ingresso
+                </a>
+
             </div>
 
         {% empty %}

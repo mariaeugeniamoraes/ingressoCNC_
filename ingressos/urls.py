@@ -25,4 +25,16 @@ urlpatterns = [
     path('login/', views.entrar, name='login'),
     path('logout/', views.sair, name='logout'),
     path('meus-pedidos/', views.meus_pedidos, name='meus_pedidos'),
+
+    path(
+        'ingresso/<int:pedido_id>/',
+        views.ingresso,
+        name='ingresso'
+    ),
+
+    path(
+        'ingresso/validar/<str:codigo>/',
+        views.validar_ingresso,
+        name='validar_ingresso'
+    ),
 ]
