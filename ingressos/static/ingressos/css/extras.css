@@ -1,0 +1,149 @@
+/* =========================
+   ESTADOS DOS JOGOS
+========================= */
+
+.card-indisponivel {
+    opacity: 0.75;
+}
+
+.card-indisponivel .card-jogo-topo {
+    background-color: #6d6d6d;
+}
+
+.selo-estado {
+    display: inline-block;
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin-bottom: 15px;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.selo-esgotado {
+    background-color: #fdeaea;
+    color: var(--vermelho-principal);
+}
+
+.selo-encerrado {
+    background-color: #ededed;
+    color: #5f5f5f;
+}
+
+/* Botão apagado, no lugar do "Comprar ingresso" */
+.botao-desativado {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+
+    background-color: #dcdcdc;
+    color: #767676;
+
+    border-radius: 8px;
+    padding: 12px 20px;
+
+    font-weight: bold;
+    cursor: not-allowed;
+}
+
+.titulo-encerrados {
+    margin-top: 50px;
+}
+
+.aviso-limite {
+    color: var(--cinza);
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+
+/* =========================
+   PERFIL
+========================= */
+
+.card-perfil {
+    max-width: 700px;
+
+    background-color: var(--branco);
+    border-radius: 16px;
+    padding: 30px;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.perfil-dados {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.perfil-dados span {
+    display: block;
+
+    color: var(--cinza);
+    font-size: 12px;
+    letter-spacing: 1px;
+
+    margin-bottom: 4px;
+}
+
+.perfil-dados strong {
+    font-size: 17px;
+    word-break: break-word;
+}
+
+.acoes-perfil {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+
+    margin-top: 30px;
+}
+
+
+/* =========================
+   PÁGINA DE ERRO
+========================= */
+
+.card-erro {
+    max-width: 520px;
+    margin: 0 auto;
+
+    background-color: var(--branco);
+    border-radius: 16px;
+    border-top: 8px solid var(--vermelho-principal);
+
+    padding: 40px;
+    text-align: center;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.icone-erro {
+    width: 54px;
+    height: 54px;
+    line-height: 54px;
+    margin: 0 auto 15px;
+
+    background-color: var(--vermelho-principal);
+    color: var(--branco);
+    border-radius: 50%;
+
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.mensagem-erro {
+    color: var(--cinza);
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+
+/* Celular */
+@media (max-width: 720px) {
+
+    .perfil-dados {
+        grid-template-columns: 1fr;
+    }
+}

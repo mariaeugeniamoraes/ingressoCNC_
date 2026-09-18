@@ -1,21 +1,34 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ingressos/base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Erro na compra</title>
-</head>
+{% block title %}
+Não foi possível continuar | Ingressos Náutico
+{% endblock %}
 
-<body>
 
-    <h1>Não foi possível realizar a compra</h1>
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/extras.css' %}">
+{% endblock %}
 
-    <p>{{ mensagem }}</p>
 
-    <a href="{% url 'jogos' %}">
-        <button>Voltar</button>
-    </a>
+{% block content %}
 
-</body>
+<section class="pagina-erro">
 
-</html>
+    <div class="card-erro">
+
+        <p class="icone-erro">!</p>
+
+        <h2>Não foi possível continuar</h2>
+
+        <p class="mensagem-erro">{{ mensagem }}</p>
+
+        <a href="{% url 'jogos' %}" class="botao-principal">
+            Ver outros jogos
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,32 +1,159 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Jogo, Setor, Pedido
-from .forms import CadastroForm
+from django.db import transaction
+from django.db.models import F
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import reverse
+
+from .models import Jogo, Setor, Pedido
+from .forms import CadastroForm, PerfilForm
 from .mapa_estadio import montar_mapa, CONTEXTO_FIXO
 from .ingresso_qr import gerar_codigo, ler_codigo, gerar_qr_svg
 
+
+# Quantidade máxima de ingressos em um único pedido
+MAX_INGRESSOS_POR_PEDIDO = 6
+
+
+# ----------------------------------------------------------------
+# FUNÇÕES AUXILIARES
+# ----------------------------------------------------------------
+
+def erro(request, mensagem):
+    """Atalho para a tela de erro da compra."""
+
+    return render(
+        request,
+        'ingressos/erro_compra.html',
+        {'mensagem': mensagem}
+    )
+
+
+def ler_quantidade(valor):
+    """
+    Converte o que veio do formulário em número.
+
+    Se a pessoa mexer no HTML e mandar texto, devolve 0
+    em vez de derrubar o site com erro 500.
+    """
+
+    try:
+        return int(valor)
+
+    except (TypeError, ValueError):
+        return 0
+
+
+def problema_na_compra(setor, quantidade):
+    """
+    Confere todas as regras de venda de uma vez.
+
+    Devolve a mensagem de erro, ou None se estiver tudo certo.
+
+    Essas mesmas regras são conferidas em cada etapa da compra,
+    porque o navegador pode pular telas indo direto pela URL.
+    """
+
+    if setor.jogo.encerrado:
+        return (
+            'Este jogo já aconteceu. '
+            'Não é mais possível comprar ingressos.'
+        )
+
+    if setor.esgotado:
+        return (
+            f'Os ingressos do setor {setor.nome} '
+            f'estão esgotados.'
+        )
+
+    if quantidade < 1:
+        return 'Escolha pelo menos um ingresso.'
+
+    if quantidade > MAX_INGRESSOS_POR_PEDIDO:
+        return (
+            f'É possível comprar no máximo '
+            f'{MAX_INGRESSOS_POR_PEDIDO} ingressos por pedido.'
+        )
+
+    if quantidade > setor.quantidade:
+        return (
+            f'Restam apenas {setor.quantidade} ingressos '
+            f'no setor {setor.nome}.'
+        )
+
+    return None
+
+
+# ----------------------------------------------------------------
+# PÁGINAS PÚBLICAS
+# ----------------------------------------------------------------
+
 def home(request):
-    return render(request, 'ingressos/home.html')
+    return render(
+        request,
+        'ingressos/home.html'
+    )
 
 
 def jogos(request):
-    lista_jogos = Jogo.objects.all()
+    """
+    Lista as partidas.
+
+    Os jogos que já aconteceram vão para o fim,
+    e cada card mostra a situação:
+    à venda, esgotado ou encerrado.
+    """
+
+    todos = Jogo.objects.prefetch_related('setor_set')
+
+    proximos = [
+        jogo
+        for jogo in todos
+        if not jogo.encerrado
+    ]
+
+    encerrados = [
+        jogo
+        for jogo in todos
+        if jogo.encerrado
+    ]
 
     return render(
         request,
         'ingressos/jogos.html',
-        {'jogos': lista_jogos}
+        {
+            'jogos': proximos,
+            'encerrados': list(reversed(encerrados)),
+        }
     )
+
+
+# ----------------------------------------------------------------
+# FLUXO DE COMPRA
+# ----------------------------------------------------------------
 
 @login_required(login_url='login')
 def comprar(request, jogo_id):
-    jogo = get_object_or_404(Jogo, id=jogo_id)
+    """Mapa de setores do jogo escolhido."""
+
+    jogo = get_object_or_404(
+        Jogo,
+        id=jogo_id
+    )
+
+    if jogo.encerrado:
+        return erro(
+            request,
+            'Este jogo já aconteceu. '
+            'Não é mais possível comprar ingressos.'
+        )
+
     setores = jogo.setor_set.all()
 
-    mapa, dados_mapa, setores_faltando = montar_mapa(setores)
+    mapa, dados_mapa, setores_faltando = montar_mapa(
+        setores
+    )
 
     return render(
         request,
@@ -41,19 +168,69 @@ def comprar(request, jogo_id):
         }
     )
 
+
+@login_required(login_url='login')
 def selecionar_setor(request, setor_id):
-    setor = get_object_or_404(Setor, id=setor_id)
+    """Escolha da quantidade de ingressos."""
+
+    setor = get_object_or_404(
+        Setor,
+        id=setor_id
+    )
+
+    if setor.jogo.encerrado:
+        return erro(
+            request,
+            'Este jogo já aconteceu. '
+            'Não é mais possível comprar ingressos.'
+        )
+
+    if setor.esgotado:
+        return erro(
+            request,
+            f'Os ingressos do setor {setor.nome} '
+            f'estão esgotados.'
+        )
 
     return render(
         request,
         'ingressos/selecionar_setor.html',
-        {'setor': setor}
+        {
+            'setor': setor,
+            'maximo': min(
+                setor.quantidade,
+                MAX_INGRESSOS_POR_PEDIDO
+            ),
+        }
     )
 
-def resumo(request, setor_id):
-    setor = get_object_or_404(Setor, id=setor_id)
 
-    quantidade = int(request.GET.get('quantidade', 1))
+@login_required(login_url='login')
+def resumo(request, setor_id):
+    """Resumo antes da verificação facial."""
+
+    setor = get_object_or_404(
+        Setor,
+        id=setor_id
+    )
+
+    quantidade = ler_quantidade(
+        request.GET.get(
+            'quantidade',
+            1
+        )
+    )
+
+    mensagem = problema_na_compra(
+        setor,
+        quantidade
+    )
+
+    if mensagem:
+        return erro(
+            request,
+            mensagem
+        )
 
     total = setor.preco * quantidade
 
@@ -63,93 +240,162 @@ def resumo(request, setor_id):
         {
             'setor': setor,
             'quantidade': quantidade,
-            'total': total
+            'total': total,
         }
     )
 
+
 @login_required(login_url='login')
-def finalizar_compra(request, setor_id):
+def verificacao_facial(request, setor_id):
+    """Simulação da verificação de identidade."""
 
     setor = get_object_or_404(
         Setor,
         id=setor_id
     )
 
+    quantidade = ler_quantidade(
+        request.POST.get('quantidade')
+        or request.GET.get('quantidade')
+    )
+
+    mensagem = problema_na_compra(
+        setor,
+        quantidade
+    )
+
+    if mensagem:
+        return erro(
+            request,
+            mensagem
+        )
+
+    return render(
+        request,
+        'ingressos/verificacao_facial.html',
+        {
+            'setor': setor,
+            'quantidade': quantidade,
+        }
+    )
+
+
+@login_required(login_url='login')
+def pagamento(request, setor_id):
+    """Escolha da forma de pagamento."""
+
+    setor = get_object_or_404(
+        Setor,
+        id=setor_id
+    )
+
+    quantidade = ler_quantidade(
+        request.POST.get('quantidade')
+        or request.GET.get('quantidade')
+    )
+
+    mensagem = problema_na_compra(
+        setor,
+        quantidade
+    )
+
+    if mensagem:
+        return erro(
+            request,
+            mensagem
+        )
+
+    total = setor.preco * quantidade
+
+    return render(
+        request,
+        'ingressos/pagamento.html',
+        {
+            'setor': setor,
+            'quantidade': quantidade,
+            'total': total,
+        }
+    )
+
+
+@login_required(login_url='login')
+def finalizar_compra(request, setor_id):
+    """
+    Cria o pedido e desconta
+    os ingressos do estoque.
+    """
+
     # A finalização só pode acontecer por POST
     if request.method != 'POST':
         return redirect('jogos')
 
-    quantidade = int(
-        request.POST.get('quantidade', 1)
+    quantidade = ler_quantidade(
+        request.POST.get(
+            'quantidade',
+            1
+        )
     )
 
     forma_pagamento = request.POST.get(
         'forma_pagamento'
     )
 
-    # Verifica se a quantidade é válida
-    if quantidade < 1 or quantidade > setor.quantidade:
-
-        return render(
-            request,
-            'ingressos/erro_compra.html',
-            {
-                'mensagem':
-                'Quantidade de ingressos inválida.'
-            }
-        )
-
-    # Formas de pagamento aceitas na simulação
     formas_validas = [
         'pix',
         'credito',
-        'debito'
+        'debito',
     ]
 
-    # Verifica se o usuário escolheu
-    # uma forma de pagamento válida
     if forma_pagamento not in formas_validas:
-
-        return render(
+        return erro(
             request,
-            'ingressos/erro_compra.html',
-            {
-                'mensagem':
-                'Selecione uma forma de pagamento válida.'
-            }
+            'Selecione uma forma de pagamento válida.'
         )
 
-    # Calcula novamente no servidor.
-    # Não confiamos no valor enviado pelo navegador.
-    total = setor.preco * quantidade
+    # A transação ajuda a evitar problemas
+    # caso duas compras ocorram ao mesmo tempo.
+    with transaction.atomic():
 
-    # Cria o pedido
-    pedido = Pedido.objects.create(
+        setor = get_object_or_404(
+            Setor.objects.select_for_update(),
+            id=setor_id
+        )
 
-        usuario=request.user,
+        mensagem = problema_na_compra(
+            setor,
+            quantidade
+        )
 
-        setor=setor,
+        if mensagem:
+            return erro(
+                request,
+                mensagem
+            )
 
-        quantidade=quantidade,
+        # O total é calculado no servidor.
+        total = setor.preco * quantidade
 
-        valor_total=total,
+        pedido = Pedido.objects.create(
+            usuario=request.user,
+            setor=setor,
+            quantidade=quantidade,
+            valor_total=total,
+            biometria_verificada=True,
+            forma_pagamento=forma_pagamento,
+            status_pagamento='pago'
+        )
 
-        biometria_verificada=True,
+        # Desconta a quantidade diretamente
+        # no banco de dados.
+        Setor.objects.filter(
+            id=setor.id
+        ).update(
+            quantidade=(
+                F('quantidade')
+                - quantidade
+            )
+        )
 
-        forma_pagamento=forma_pagamento,
-
-        status_pagamento='pago'
-
-    )
-
-    # Desconta os ingressos vendidos
-    setor.quantidade = (
-        setor.quantidade - quantidade
-    )
-
-    setor.save()
-
-    # Exibe a confirmação
     return render(
         request,
         'ingressos/compra_finalizada.html',
@@ -158,14 +404,21 @@ def finalizar_compra(request, setor_id):
         }
     )
 
+
+# ----------------------------------------------------------------
+# CONTA DO USUÁRIO
+# ----------------------------------------------------------------
+
 def cadastro(request):
 
-    
     if request.method == 'POST':
 
-        form = CadastroForm(request.POST)
+        form = CadastroForm(
+            request.POST
+        )
 
         if form.is_valid():
+
             form.save()
 
             return render(
@@ -180,15 +433,25 @@ def cadastro(request):
     return render(
         request,
         'ingressos/cadastro.html',
-        {'form': form}
+        {
+            'form': form
+        }
     )
 
+
 def entrar(request):
+
     mensagem = None
 
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+
+        username = request.POST.get(
+            'username'
+        )
+
+        password = request.POST.get(
+            'password'
+        )
 
         usuario = authenticate(
             request,
@@ -197,107 +460,184 @@ def entrar(request):
         )
 
         if usuario is not None:
-            login(request, usuario)
 
-            proxima_pagina = request.POST.get('next')
+            login(
+                request,
+                usuario
+            )
 
-            if proxima_pagina:
-                return redirect(proxima_pagina)
+            proxima_pagina = request.POST.get(
+                'next'
+            )
+
+            # Só aceita endereços internos.
+            if (
+                proxima_pagina
+                and proxima_pagina.startswith('/')
+            ):
+                return redirect(
+                    proxima_pagina
+                )
 
             return redirect('home')
+
         else:
-            mensagem = 'Usuário ou senha incorretos.'
+
+            mensagem = (
+                'Usuário ou senha incorretos.'
+            )
 
     return render(
         request,
         'ingressos/login.html',
-        {'mensagem': mensagem}
+        {
+            'mensagem': mensagem
+        }
     )
 
+
 def sair(request):
+
     logout(request)
+
     return redirect('home')
+
+
+@login_required(login_url='login')
+def perfil(request):
+    """Dados da conta e resumo das compras."""
+
+    pedidos = Pedido.objects.filter(
+        usuario=request.user
+    ).order_by(
+        '-data_compra'
+    )
+
+    total_pedidos = pedidos.count()
+
+    ingressos_comprados = sum(
+        pedido.quantidade
+        for pedido in pedidos
+    )
+
+    ultimo_pedido = pedidos.first()
+
+    return render(
+        request,
+        'ingressos/perfil.html',
+        {
+            'pedidos': pedidos,
+            'total_pedidos': total_pedidos,
+            'ingressos_comprados': ingressos_comprados,
+            'ultimo_pedido': ultimo_pedido,
+        }
+    )
+
+
+@login_required(login_url='login')
+def editar_perfil(request):
+    """
+    Permite alterar nome,
+    sobrenome e e-mail.
+    """
+
+    if request.method == 'POST':
+
+        # instance=request.user garante
+        # que o usuário edita a própria conta.
+        form = PerfilForm(
+            request.POST,
+            instance=request.user
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect(
+                'perfil'
+            )
+
+    else:
+
+        form = PerfilForm(
+            instance=request.user
+        )
+
+    return render(
+        request,
+        'ingressos/editar_perfil.html',
+        {
+            'form': form
+        }
+    )
+
 
 @login_required(login_url='login')
 def meus_pedidos(request):
-    pedidos = Pedido.objects.filter(
-        usuario=request.user
-    ).order_by('-data_compra')
+
+    pedidos = (
+        Pedido.objects
+        .filter(
+            usuario=request.user
+        )
+        .select_related(
+            'setor',
+            'setor__jogo'
+        )
+        .order_by(
+            '-data_compra'
+        )
+    )
 
     return render(
         request,
         'ingressos/meus_pedidos.html',
-        {'pedidos': pedidos}
-    )
-
-@login_required(login_url='login')
-def verificacao_facial(request, setor_id):
-    setor = get_object_or_404(Setor, id=setor_id)
-
-    quantidade = request.POST.get('quantidade')
-
-    return render(
-        request,
-        'ingressos/verificacao_facial.html',
         {
-            'setor': setor,
-            'quantidade': quantidade
+            'pedidos': pedidos
         }
     )
 
-@login_required(login_url='login')
-def pagamento(request, setor_id):
 
-    setor = get_object_or_404(Setor, id=setor_id)
-
-    quantidade = int(request.POST.get('quantidade', 1))
-
-    if quantidade < 1 or quantidade > setor.quantidade:
-
-        return render(
-            request,
-            'ingressos/erro_compra.html',
-            {
-                'mensagem': 'Quantidade de ingressos inválida.'
-            }
-        )
-
-    total = setor.preco * quantidade
-
-    return render(
-        request,
-        'ingressos/pagamento.html',
-        {
-            'setor': setor,
-            'quantidade': quantidade,
-            'total': total
-        }
-    )
-# Create your views here.
-
+# ----------------------------------------------------------------
+# INGRESSO E VALIDAÇÃO
+# ----------------------------------------------------------------
 
 @login_required(login_url='login')
 def ingresso(request, pedido_id):
-    """Mostra o ingresso virtual do pedido, com o QR Code."""
+    """Ingresso virtual com QR Code."""
 
-    pedido = get_object_or_404(Pedido, id=pedido_id)
+    # Um usuário comum só pode
+    # visualizar os próprios ingressos.
+    if request.user.is_staff:
 
-    # Só o dono do pedido (ou a equipe do clube) pode ver o ingresso
-    if pedido.usuario != request.user and not request.user.is_staff:
-        return render(
-            request,
-            'ingressos/erro_compra.html',
-            {'mensagem': 'Este ingresso pertence a outra pessoa.'}
+        pedido = get_object_or_404(
+            Pedido,
+            id=pedido_id
         )
 
-    codigo = gerar_codigo(pedido)
+    else:
 
-    # Endereço completo que o QR Code vai guardar
-    endereco = request.build_absolute_uri(
-        reverse('validar_ingresso', args=[codigo])
+        pedido = get_object_or_404(
+            Pedido,
+            id=pedido_id,
+            usuario=request.user
+        )
+
+    codigo = gerar_codigo(
+        pedido
     )
 
-    qr = gerar_qr_svg(endereco)
+    endereco = request.build_absolute_uri(
+        reverse(
+            'validar_ingresso',
+            args=[codigo]
+        )
+    )
+
+    qr = gerar_qr_svg(
+        endereco
+    )
 
     return render(
         request,
@@ -314,37 +654,37 @@ def ingresso(request, pedido_id):
 @staff_member_required
 def validar_ingresso(request, codigo):
     """
-    Página usada pela equipe do clube na portaria.
-    Lê o código do QR e diz se o ingresso é válido.
+    Página usada pela equipe do clube
+    na portaria.
+
+    Lê o código do QR e diz
+    se o ingresso é válido.
     """
 
-    pedido_id = ler_codigo(codigo)
+    pedido_id = ler_codigo(
+        codigo
+    )
 
     pedido = None
+
     if pedido_id is not None:
-        pedido = Pedido.objects.filter(id=pedido_id).first()
+
+        pedido = (
+            Pedido.objects
+            .select_related(
+                'setor',
+                'setor__jogo'
+            )
+            .filter(
+                id=pedido_id
+            )
+            .first()
+        )
 
     return render(
         request,
         'ingressos/validar_ingresso.html',
-        {'pedido': pedido}
+        {
+            'pedido': pedido
+        }
     )
-
-@login_required(login_url='login')
-def perfil(request):
-
-    pedidos = Pedido.objects.filter(
-        usuario=request.user
-    ).order_by('-data_compra')
-
-    total_pedidos = pedidos.count()
-
-    ingressos_comprados = sum(
-        pedido.quantidade for pedido in pedidos
-    )
-
-    return render(request, 'ingressos/perfil.html', {
-        'pedidos': pedidos,
-        'total_pedidos': total_pedidos,
-        'ingressos_comprados': ingressos_comprados,
-    })

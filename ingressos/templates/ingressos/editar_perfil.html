@@ -1,0 +1,113 @@
+{% extends 'ingressos/base.html' %}
+{% load static %}
+
+{% block title %}
+Editar perfil | Ingressos Náutico
+{% endblock %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/extras.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<section class="pagina-autenticacao">
+
+    <div class="card-autenticacao">
+
+        <p class="hero-destaque">MINHA CONTA</p>
+
+        <h2>Editar perfil</h2>
+
+        <p class="texto-autenticacao">
+            Altere seu nome, sobrenome e e-mail.
+        </p>
+
+
+        <form method="POST" class="form-autenticacao">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="erro-campo">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+
+            <div class="campo-formulario">
+
+                <label for="{{ form.first_name.id_for_label }}">
+                    Nome
+                </label>
+
+                {{ form.first_name }}
+
+                {% if form.first_name.errors %}
+                    <div class="erro-campo">
+                        {{ form.first_name.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="campo-formulario">
+
+                <label for="{{ form.last_name.id_for_label }}">
+                    Sobrenome
+                </label>
+
+                {{ form.last_name }}
+
+                {% if form.last_name.errors %}
+                    <div class="erro-campo">
+                        {{ form.last_name.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="campo-formulario">
+
+                <label for="{{ form.email.id_for_label }}">
+                    E-mail
+                </label>
+
+                {{ form.email }}
+
+                {% if form.email.errors %}
+                    <div class="erro-campo">
+                        {{ form.email.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="botao-principal botao-autenticacao"
+            >
+                Salvar alterações
+            </button>
+
+        </form>
+
+
+        <div class="rodape-autenticacao">
+
+            <a href="{% url 'perfil' %}">
+                Voltar ao perfil
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

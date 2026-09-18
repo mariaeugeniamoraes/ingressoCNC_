@@ -1,23 +1,40 @@
 {% extends 'ingressos/base.html' %}
+{% load static %}
 
 {% block title %}
 Meu Perfil | Ingressos Náutico
 {% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/extras.css' %}">
+{% endblock %}
+
 
 {% block content %}
 
 <section class="pagina-perfil">
 
     <div class="titulo-pagina">
-        <p class="hero-destaque">MINHA CONTA</p>
-        <h2>Meu Perfil</h2>
-        <p>Veja as informações da sua conta e acompanhe seus ingressos.</p>
+
+        <p class="hero-destaque">
+            MINHA CONTA
+        </p>
+
+        <h2>
+            Meu Perfil
+        </h2>
+
+        <p>
+            Veja as informações da sua conta e acompanhe seus ingressos.
+        </p>
+
     </div>
 
 
     <div class="perfil-container">
 
-        <!-- Informações do usuário -->
+        <!-- INFORMAÇÕES PRINCIPAIS -->
+
         <div class="card-perfil">
 
             <div class="avatar-perfil">
@@ -30,7 +47,17 @@ Meu Perfil | Ingressos Náutico
                     USUÁRIO
                 </span>
 
-                <h3>{{ user.username }}</h3>
+                <h3>
+                    {{ user.username }}
+                </h3>
+
+                {% if user.get_full_name %}
+
+                    <p>
+                        {{ user.get_full_name }}
+                    </p>
+
+                {% endif %}
 
                 {% if user.email %}
 
@@ -51,7 +78,8 @@ Meu Perfil | Ingressos Náutico
         </div>
 
 
-        <!-- Resumo da conta -->
+        <!-- RESUMO DA CONTA -->
+
         <div class="resumo-perfil">
 
             <div class="card-estatistica">
@@ -82,19 +110,104 @@ Meu Perfil | Ingressos Náutico
         </div>
 
 
-        <!-- Ações -->
+        <!-- DETALHES DA CONTA -->
+
+        <div class="card-perfil">
+
+            <div class="perfil-dados">
+
+                <div>
+                    <span>Nome</span>
+
+                    <strong>
+                        {{ user.get_full_name|default:"Não informado" }}
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span>E-mail</span>
+
+                    <strong>
+                        {{ user.email|default:"Não informado" }}
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span>Conta criada em</span>
+
+                    <strong>
+                        {{ user.date_joined|date:"d/m/Y" }}
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span>Última compra</span>
+
+                    <strong>
+                        {% if ultimo_pedido %}
+                            {{ ultimo_pedido.data_compra|date:"d/m/Y" }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- AÇÕES -->
+
         <div class="acoes-perfil">
 
             <div class="card-acao-perfil">
 
                 <div>
-                    <span class="icone-acao-perfil">🎟️</span>
 
-                    <h3>Meus ingressos</h3>
+                    <span class="icone-acao-perfil">
+                        👤
+                    </span>
+
+                    <h3>
+                        Editar perfil
+                    </h3>
+
+                    <p>
+                        Atualize seu nome, sobrenome e e-mail.
+                    </p>
+
+                </div>
+
+                <a
+                    href="{% url 'editar_perfil' %}"
+                    class="botao-principal"
+                >
+                    Editar dados
+                </a>
+
+            </div>
+
+
+            <div class="card-acao-perfil">
+
+                <div>
+
+                    <span class="icone-acao-perfil">
+                        🎟️
+                    </span>
+
+                    <h3>
+                        Meus ingressos
+                    </h3>
 
                     <p>
                         Consulte suas compras e acesse seus ingressos digitais.
                     </p>
+
                 </div>
 
                 <a
@@ -110,13 +223,19 @@ Meu Perfil | Ingressos Náutico
             <div class="card-acao-perfil">
 
                 <div>
-                    <span class="icone-acao-perfil">⚽</span>
 
-                    <h3>Próximos jogos</h3>
+                    <span class="icone-acao-perfil">
+                        ⚽
+                    </span>
+
+                    <h3>
+                        Próximos jogos
+                    </h3>
 
                     <p>
                         Veja as próximas partidas disponíveis para compra.
                     </p>
+
                 </div>
 
                 <a

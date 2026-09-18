@@ -1,7 +1,13 @@
 {% extends 'ingressos/base.html' %}
+{% load static %}
 
 {% block title %}
 Jogos | Ingressos Náutico
+{% endblock %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/extras.css' %}">
 {% endblock %}
 
 
@@ -20,10 +26,14 @@ Jogos | Ingressos Náutico
 
         {% for jogo in jogos %}
 
-            <div class="card-jogo">
+            <div class="card-jogo {% if jogo.esgotado %}card-indisponivel{% endif %}">
 
                 <div class="card-jogo-topo">
-                    <span>PRÓXIMO JOGO</span>
+                    {% if jogo.esgotado %}
+                        <span>ESGOTADO</span>
+                    {% else %}
+                        <span>INGRESSOS À VENDA</span>
+                    {% endif %}
                 </div>
 
                 <div class="card-jogo-conteudo">
@@ -42,7 +52,7 @@ Jogos | Ingressos Náutico
 
                         <p>
                             <strong>Horário</strong><br>
-                            {{ jogo.horario|time:"H:i" }}
+                            {{ jogo.horario|time:"H:i"|default:"A definir" }}
                         </p>
 
                         <p>
@@ -52,10 +62,28 @@ Jogos | Ingressos Náutico
 
                     </div>
 
-                    <a href="{% url 'comprar' jogo.id %}"
-                       class="botao-principal">
-                        Comprar ingresso
-                    </a>
+                    {% if jogo.esgotado %}
+
+                        <p class="selo-estado selo-esgotado">
+                            Ingressos esgotados
+                        </p>
+
+                        <span class="botao-desativado">
+                            Indisponível
+                        </span>
+
+                    {% else %}
+
+                        <p class="disponibilidade">
+                            {{ jogo.ingressos_disponiveis }} ingressos disponíveis
+                        </p>
+
+                        <a href="{% url 'comprar' jogo.id %}"
+                           class="botao-principal">
+                            Comprar ingresso
+                        </a>
+
+                    {% endif %}
 
                 </div>
 
@@ -71,6 +99,63 @@ Jogos | Ingressos Náutico
         {% endfor %}
 
     </div>
+
+
+    {% if encerrados %}
+
+        <div class="titulo-pagina titulo-encerrados">
+            <h2>Jogos anteriores</h2>
+            <p>Partidas que já aconteceram.</p>
+        </div>
+
+        <div class="lista-jogos">
+
+            {% for jogo in encerrados %}
+
+                <div class="card-jogo card-indisponivel">
+
+                    <div class="card-jogo-topo">
+                        <span>ENCERRADO</span>
+                    </div>
+
+                    <div class="card-jogo-conteudo">
+
+                        <h3>
+                            Náutico <span class="versus">x</span>
+                            {{ jogo.adversario }}
+                        </h3>
+
+                        <div class="informacoes-jogo">
+
+                            <p>
+                                <strong>Data</strong><br>
+                                {{ jogo.data|date:"d/m/Y" }}
+                            </p>
+
+                            <p>
+                                <strong>Local</strong><br>
+                                {{ jogo.estadio }}
+                            </p>
+
+                        </div>
+
+                        <p class="selo-estado selo-encerrado">
+                            Jogo já realizado
+                        </p>
+
+                        <span class="botao-desativado">
+                            Vendas encerradas
+                        </span>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
 
 </section>
 
