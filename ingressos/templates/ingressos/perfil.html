@@ -1,0 +1,82 @@
+{% extends 'ingressos/base.html' %}
+{% load static %}
+
+{% block title %}
+Meu perfil | Ingressos Náutico
+{% endblock %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/extras.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<section class="pagina-perfil">
+
+    <div class="titulo-pagina">
+        <p class="hero-destaque">MINHA CONTA</p>
+        <h2>Perfil</h2>
+        <p>Seus dados e um resumo das suas compras.</p>
+    </div>
+
+
+    <div class="card-perfil">
+
+        <div class="perfil-dados">
+
+            <div>
+                <span>Usuário</span>
+                <strong>{{ user.username }}</strong>
+            </div>
+
+            <div>
+                <span>Nome</span>
+                <strong>
+                    {{ user.get_full_name|default:"Não informado" }}
+                </strong>
+            </div>
+
+            <div>
+                <span>E-mail</span>
+                <strong>{{ user.email|default:"Não informado" }}</strong>
+            </div>
+
+            <div>
+                <span>Conta criada em</span>
+                <strong>{{ user.date_joined|date:"d/m/Y" }}</strong>
+            </div>
+
+            <div>
+                <span>Pedidos feitos</span>
+                <strong>{{ total_pedidos }}</strong>
+            </div>
+
+            <div>
+                <span>Última compra</span>
+                <strong>
+                    {{ ultimo_pedido.data_compra|date:"d/m/Y"|default:"—" }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="acoes-perfil">
+
+            <a href="{% url 'editar_perfil' %}" class="botao-principal">
+                Editar dados
+            </a>
+
+            <a href="{% url 'meus_pedidos' %}" class="botao-secundario">
+                Meus pedidos
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

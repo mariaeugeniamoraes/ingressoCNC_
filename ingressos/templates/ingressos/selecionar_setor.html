@@ -32,6 +32,10 @@ Selecionar ingresso | Ingressos Náutico
                 {{ setor.quantidade }} ingressos disponíveis
             </p>
 
+            <p class="aviso-limite">
+                Máximo de {{ maximo }} por pedido.
+            </p>
+
         </div>
 
 
@@ -51,7 +55,7 @@ Selecionar ingresso | Ingressos Náutico
                 name="quantidade"
                 value="1"
                 min="1"
-                max="{{ setor.quantidade }}"
+                max="{{ maximo }}"
             >
 
 

@@ -1,7 +1,13 @@
 {% extends 'ingressos/base.html' %}
+{% load static %}
 
 {% block title %}
-Criar conta | Ingressos Náutico
+Editar perfil | Ingressos Náutico
+{% endblock %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/extras.css' %}">
 {% endblock %}
 
 
@@ -11,12 +17,12 @@ Criar conta | Ingressos Náutico
 
     <div class="card-autenticacao">
 
-        <p class="hero-destaque">NOVA CONTA</p>
+        <p class="hero-destaque">MINHA CONTA</p>
 
-        <h2>Criar conta</h2>
+        <h2>Editar perfil</h2>
 
         <p class="texto-autenticacao">
-            Cadastre-se para comprar e acompanhar seus ingressos.
+            Altere seu nome, sobrenome e e-mail.
         </p>
 
 
@@ -24,22 +30,11 @@ Criar conta | Ingressos Náutico
 
             {% csrf_token %}
 
-
-            <div class="campo-formulario">
-
-                <label for="{{ form.username.id_for_label }}">
-                    Usuário
-                </label>
-
-                {{ form.username }}
-
-                {% if form.username.errors %}
-                    <div class="erro-campo">
-                        {{ form.username.errors }}
-                    </div>
-                {% endif %}
-
-            </div>
+            {% if form.non_field_errors %}
+                <div class="erro-campo">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
 
 
             <div class="campo-formulario">
@@ -93,45 +88,11 @@ Criar conta | Ingressos Náutico
             </div>
 
 
-            <div class="campo-formulario">
-
-                <label for="{{ form.password1.id_for_label }}">
-                    Senha
-                </label>
-
-                {{ form.password1 }}
-
-                {% if form.password1.errors %}
-                    <div class="erro-campo">
-                        {{ form.password1.errors }}
-                    </div>
-                {% endif %}
-
-            </div>
-
-
-            <div class="campo-formulario">
-
-                <label for="{{ form.password2.id_for_label }}">
-                    Confirmar senha
-                </label>
-
-                {{ form.password2 }}
-
-                {% if form.password2.errors %}
-                    <div class="erro-campo">
-                        {{ form.password2.errors }}
-                    </div>
-                {% endif %}
-
-            </div>
-
-
             <button
                 type="submit"
                 class="botao-principal botao-autenticacao"
             >
-                Criar conta
+                Salvar alterações
             </button>
 
         </form>
@@ -139,10 +100,8 @@ Criar conta | Ingressos Náutico
 
         <div class="rodape-autenticacao">
 
-            <p>Já possui uma conta?</p>
-
-            <a href="{% url 'login' %}">
-                Entrar
+            <a href="{% url 'perfil' %}">
+                Voltar ao perfil
             </a>
 
         </div>

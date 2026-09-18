@@ -44,11 +44,15 @@
         {% if user.is_authenticated %}
 
             <span class="usuario-logado">
-                Olá, {{ user.username }}
+                Olá, {{ user.first_name|default:user.username }}
             </span>
 
             <a href="{% url 'meus_pedidos' %}">
                 Meus Pedidos
+            </a>
+
+            <a href="{% url 'perfil' %}">
+                Perfil
             </a>
 
             <a href="{% url 'logout' %}">
