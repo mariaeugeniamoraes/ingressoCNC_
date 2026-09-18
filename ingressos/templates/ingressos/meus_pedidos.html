@@ -4,7 +4,6 @@
 Meus Pedidos | Ingressos Náutico
 {% endblock %}
 
-
 {% block content %}
 
 <section class="pagina-pedidos">
@@ -12,99 +11,161 @@ Meus Pedidos | Ingressos Náutico
     <div class="titulo-pagina">
         <p class="hero-destaque">MINHA CONTA</p>
         <h2>Meus Pedidos</h2>
-        <p>Acompanhe os ingressos que você já comprou.</p>
+        <p>Consulte suas compras e acesse seus ingressos digitais.</p>
     </div>
-
 
     <div class="lista-pedidos">
 
         {% for pedido in pedidos %}
 
-            <div class="card-pedido">
+        <div class="card-pedido">
 
-                <div class="pedido-topo">
+            <!-- TOPO DO PEDIDO -->
+            <div class="pedido-topo">
 
-                    <div>
-                        <p class="numero-pedido">
-                            PEDIDO #{{ pedido.id }}
-                        </p>
+                <div>
+                    <p class="numero-pedido">
+                        PEDIDO #{{ pedido.id }}
+                    </p>
 
-                        <h3>
-                            {{ pedido.setor.jogo }}
-                        </h3>
-                    </div>
+                    <h3>
+                        {{ pedido.setor.jogo }}
+                    </h3>
+
+                    <p class="local-pedido">
+                        📍 {{ pedido.setor.jogo.estadio }}
+                    </p>
+                </div>
+
+                <div class="status-pedido">
+
+                    {% if pedido.status_pagamento == "pago" %}
+                        <span class="status-pago">
+                            ✓ Pagamento confirmado
+                        </span>
+                    {% else %}
+                        <span class="status-pendente">
+                            Pagamento pendente
+                        </span>
+                    {% endif %}
 
                     {% if pedido.biometria_verificada %}
-
                         <span class="status-verificado">
                             ✓ Identidade verificada
                         </span>
-
                     {% else %}
-
                         <span class="status-pendente">
                             Verificação pendente
                         </span>
-
                     {% endif %}
 
                 </div>
 
+            </div>
 
-                <div class="pedido-detalhes">
+            <!-- INFORMAÇÕES DO PEDIDO -->
+            <div class="pedido-detalhes">
 
-                    <div>
-                        <span>Setor</span>
-                        <strong>{{ pedido.setor.nome }}</strong>
-                    </div>
-
-                    <div>
-                        <span>Quantidade</span>
-                        <strong>{{ pedido.quantidade }}</strong>
-                    </div>
-
-                    <div>
-                        <span>Valor total</span>
-                        <strong>R$ {{ pedido.valor_total }}</strong>
-                    </div>
-
-                    <div>
-                        <span>Data da compra</span>
-                        <strong>
-                            {{ pedido.data_compra|date:"d/m/Y H:i" }}
-                        </strong>
-                    </div>
-
+                <div>
+                    <span>Data do jogo</span>
+                    <strong>
+                        {{ pedido.setor.jogo.data|date:"d/m/Y" }}
+                    </strong>
                 </div>
 
+                <div>
+                    <span>Horário</span>
 
-                <a
-                    href="{% url 'ingresso' pedido.id %}"
-                    class="botao-principal"
-                >
-                    Ver ingresso
-                </a>
+                    {% if pedido.setor.jogo.horario %}
+                        <strong>
+                            {{ pedido.setor.jogo.horario|time:"H:i" }}
+                        </strong>
+                    {% else %}
+                        <strong>A definir</strong>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <span>Setor</span>
+                    <strong>
+                        {{ pedido.setor.nome }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Quantidade</span>
+                    <strong>
+                        {{ pedido.quantidade }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Forma de pagamento</span>
+                    <strong>
+                        {{ pedido.get_forma_pagamento_display }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Valor total</span>
+                    <strong class="valor-pedido">
+                        R$ {{ pedido.valor_total }}
+                    </strong>
+                </div>
 
             </div>
+
+            <!-- RODAPÉ -->
+            <div class="pedido-rodape">
+
+                <div class="data-compra">
+                    Compra realizada em
+                    <strong>
+                        {{ pedido.data_compra|date:"d/m/Y" }}
+                        às
+                        {{ pedido.data_compra|date:"H:i" }}
+                    </strong>
+                </div>
+
+                {% if pedido.status_pagamento == "pago" %}
+
+                    <a
+                        href="{% url 'ingresso' pedido.id %}"
+                        class="botao-principal"
+                    >
+                        🎟 Ver ingresso digital
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
 
         {% empty %}
 
-            <div class="sem-pedidos">
+        <div class="sem-pedidos">
 
-                <h3>Você ainda não possui pedidos.</h3>
-
-                <p>
-                    Escolha uma partida e garanta seu ingresso.
-                </p>
-
-                <a
-                    href="{% url 'jogos' %}"
-                    class="botao-principal"
-                >
-                    Ver próximos jogos
-                </a>
-
+            <div class="icone-sem-pedidos">
+                🎟
             </div>
+
+            <h3>
+                Você ainda não possui pedidos.
+            </h3>
+
+            <p>
+                Escolha uma partida e garanta seu ingresso.
+            </p>
+
+            <a
+                href="{% url 'jogos' %}"
+                class="botao-principal"
+            >
+                Ver próximos jogos
+            </a>
+
+        </div>
 
         {% endfor %}
 
