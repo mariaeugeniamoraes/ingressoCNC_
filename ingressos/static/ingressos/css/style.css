@@ -1876,3 +1876,45 @@ main {
     }
 
 }
+
+/* =========================
+   MELHORIAS NO CADASTRO
+========================= */
+
+.linha-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.linha-formulario .campo-formulario {
+    width: 100%;
+}
+
+.ajuda-senha {
+    margin-top: 8px;
+    padding: 12px 15px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    color: var(--cinza);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.ajuda-senha ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.ajuda-senha li {
+    margin-bottom: 3px;
+}
+
+@media (max-width: 768px) {
+
+    .linha-formulario {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+}

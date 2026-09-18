@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Jogo, Setor, Pedido
-from django.contrib.auth.forms import UserCreationForm
+from .forms import CadastroForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -160,8 +160,10 @@ def finalizar_compra(request, setor_id):
 
 def cadastro(request):
 
+    
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+
+        form = CadastroForm(request.POST)
 
         if form.is_valid():
             form.save()
@@ -172,7 +174,8 @@ def cadastro(request):
             )
 
     else:
-        form = UserCreationForm()
+
+        form = CadastroForm()
 
     return render(
         request,

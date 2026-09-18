@@ -25,6 +25,71 @@ Criar conta | Ingressos Náutico
             {% csrf_token %}
 
 
+            <!-- NOME E SOBRENOME -->
+
+            <div class="linha-formulario">
+
+                <!-- NOME -->
+
+                <div class="campo-formulario">
+
+                    <label for="{{ form.first_name.id_for_label }}">
+                        Nome
+                    </label>
+
+                    {{ form.first_name }}
+
+                    {% if form.first_name.errors %}
+                        <div class="erro-campo">
+                            {{ form.first_name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- SOBRENOME -->
+
+                <div class="campo-formulario">
+
+                    <label for="{{ form.last_name.id_for_label }}">
+                        Sobrenome
+                    </label>
+
+                    {{ form.last_name }}
+
+                    {% if form.last_name.errors %}
+                        <div class="erro-campo">
+                            {{ form.last_name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- E-MAIL -->
+
+            <div class="campo-formulario">
+
+                <label for="{{ form.email.id_for_label }}">
+                    E-mail
+                </label>
+
+                {{ form.email }}
+
+                {% if form.email.errors %}
+                    <div class="erro-campo">
+                        {{ form.email.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <!-- USUÁRIO -->
+
             <div class="campo-formulario">
 
                 <label for="{{ form.username.id_for_label }}">
@@ -42,6 +107,8 @@ Criar conta | Ingressos Náutico
             </div>
 
 
+            <!-- SENHA -->
+
             <div class="campo-formulario">
 
                 <label for="{{ form.password1.id_for_label }}">
@@ -49,6 +116,12 @@ Criar conta | Ingressos Náutico
                 </label>
 
                 {{ form.password1 }}
+
+                {% if form.password1.help_text %}
+                    <div class="ajuda-senha">
+                        {{ form.password1.help_text }}
+                    </div>
+                {% endif %}
 
                 {% if form.password1.errors %}
                     <div class="erro-campo">
@@ -58,6 +131,8 @@ Criar conta | Ingressos Náutico
 
             </div>
 
+
+            <!-- CONFIRMAR SENHA -->
 
             <div class="campo-formulario">
 
@@ -75,6 +150,19 @@ Criar conta | Ingressos Náutico
 
             </div>
 
+
+            <!-- ERROS GERAIS -->
+
+            {% if form.non_field_errors %}
+
+                <div class="mensagem-erro">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- BOTÃO -->
 
             <button
                 type="submit"
