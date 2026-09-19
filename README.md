@@ -365,9 +365,7 @@ preencher `ALLOWED_HOSTS` e mover a `SECRET_KEY` para o `.env`.
 
 | Vídeo | Link |
 |---|---|
-| Apresentação do projeto | https://youtu.be/Dj7DkGM3EAg |
-
-
+| Apresentação do projeto | [![YouTube](https://img.shields.io/badge/Assistir-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/Dj7DkGM3EAg) |
 ---
 
 ## ☁️ Deploy
