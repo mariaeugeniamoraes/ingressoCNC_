@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import reverse
 
+import secrets
+
 from .models import Jogo, Setor, Pedido
 from .forms import CadastroForm, PerfilForm
 from .mapa_estadio import montar_mapa, CONTEXTO_FIXO
@@ -207,7 +209,7 @@ def selecionar_setor(request, setor_id):
 
 @login_required(login_url='login')
 def resumo(request, setor_id):
-    """Resumo antes da verificação facial."""
+    """Resumo antes do pagamento."""
 
     setor = get_object_or_404(
         Setor,
@@ -246,41 +248,6 @@ def resumo(request, setor_id):
 
 
 @login_required(login_url='login')
-def verificacao_facial(request, setor_id):
-    """Simulação da verificação de identidade."""
-
-    setor = get_object_or_404(
-        Setor,
-        id=setor_id
-    )
-
-    quantidade = ler_quantidade(
-        request.POST.get('quantidade')
-        or request.GET.get('quantidade')
-    )
-
-    mensagem = problema_na_compra(
-        setor,
-        quantidade
-    )
-
-    if mensagem:
-        return erro(
-            request,
-            mensagem
-        )
-
-    return render(
-        request,
-        'ingressos/verificacao_facial.html',
-        {
-            'setor': setor,
-            'quantidade': quantidade,
-        }
-    )
-
-
-@login_required(login_url='login')
 def pagamento(request, setor_id):
     """Escolha da forma de pagamento."""
 
@@ -307,6 +274,19 @@ def pagamento(request, setor_id):
 
     total = setor.preco * quantidade
 
+    # Código PIX de mentira, só para a simulação.
+    # Ele NÃO segue o formato oficial do PIX de propósito,
+    # para nenhum app de banco tentar pagar de verdade.
+    codigo_pix = (
+        f'PIX-SIMULADO-NAUTICO-'
+        f'{setor.id}-{quantidade}-{total}-'
+        f'{secrets.token_hex(8).upper()}'
+    )
+
+    qr_pix = gerar_qr_svg(
+        codigo_pix
+    )
+
     return render(
         request,
         'ingressos/pagamento.html',
@@ -314,6 +294,8 @@ def pagamento(request, setor_id):
             'setor': setor,
             'quantidade': quantidade,
             'total': total,
+            'codigo_pix': codigo_pix,
+            'qr_pix': qr_pix,
         }
     )
 
@@ -380,7 +362,9 @@ def finalizar_compra(request, setor_id):
             setor=setor,
             quantidade=quantidade,
             valor_total=total,
-            biometria_verificada=True,
+            # A verificação facial agora é opcional
+            # e feita depois da compra.
+            biometria_verificada=False,
             forma_pagamento=forma_pagamento,
             status_pagamento='pago'
         )
@@ -399,6 +383,50 @@ def finalizar_compra(request, setor_id):
     return render(
         request,
         'ingressos/compra_finalizada.html',
+        {
+            'pedido': pedido
+        }
+    )
+
+
+@login_required(login_url='login')
+def verificar_identidade(request, pedido_id):
+    """
+    Verificação facial opcional, feita depois da compra.
+
+    O torcedor pode fazer logo após pagar ou
+    mais tarde, pela página Meus pedidos.
+    """
+
+    # Cada usuário só verifica os próprios pedidos.
+    pedido = get_object_or_404(
+        Pedido,
+        id=pedido_id,
+        usuario=request.user
+    )
+
+    if pedido.biometria_verificada:
+        return redirect(
+            'ingresso',
+            pedido.id
+        )
+
+    if request.method == 'POST':
+
+        pedido.biometria_verificada = True
+
+        pedido.save(
+            update_fields=['biometria_verificada']
+        )
+
+        return redirect(
+            'ingresso',
+            pedido.id
+        )
+
+    return render(
+        request,
+        'ingressos/verificacao_facial.html',
         {
             'pedido': pedido
         }

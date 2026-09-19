@@ -1,7 +1,12 @@
 {% extends 'ingressos/base.html' %}
+{% load static %}
 
 {% block title %}
 Pagamento | Ingressos Náutico
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/compra.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -64,6 +69,7 @@ Pagamento | Ingressos Náutico
             <form
                 action="{% url 'finalizar_compra' setor.id %}"
                 method="POST"
+                id="form-pagamento"
             >
 
                 {% csrf_token %}
@@ -89,7 +95,7 @@ Pagamento | Ingressos Náutico
 
                             <div>
                                 <strong>PIX</strong>
-                                <span>Pagamento instantâneo</span>
+                                <span>QR Code ou copia e cola</span>
                             </div>
                         </div>
                     </label>
@@ -149,6 +155,7 @@ Pagamento | Ingressos Náutico
                 <button
                     type="submit"
                     class="botao-confirmar-pagamento"
+                    id="botao-pagar"
                 >
                     Confirmar pagamento
                     <span>→</span>
@@ -161,5 +168,210 @@ Pagamento | Ingressos Náutico
     </div>
 
 </section>
+
+<!-- TELA DO PIX -->
+<!-- Aparece por cima da página quando a pessoa escolhe PIX. -->
+
+<div class="pix-fundo" id="pix-fundo" hidden>
+
+    <div class="pix-janela" role="dialog" aria-modal="true" aria-labelledby="pix-titulo">
+
+        <span class="mini-titulo">PAGAMENTO VIA PIX</span>
+        <h2 id="pix-titulo">Escaneie o QR Code</h2>
+
+        <p class="pix-valor">R$ {{ total }}</p>
+
+
+        <!-- QR CODE -->
+
+        <div class="pix-qr" id="pix-qr">
+            <svg viewBox="0 0 {{ qr_pix.lado }} {{ qr_pix.lado }}"
+                 role="img"
+                 aria-label="QR Code PIX simulado">
+                <rect width="{{ qr_pix.lado }}" height="{{ qr_pix.lado }}" fill="#ffffff"/>
+                <path d="{{ qr_pix.caminho }}" fill="#000000"/>
+            </svg>
+        </div>
+
+        <p class="pix-instrucao">
+            Abra o app do seu banco, escolha pagar com PIX
+            e aponte a câmera para o código.
+        </p>
+
+
+        <!-- COPIA E COLA -->
+
+        <div class="pix-copia">
+            <input
+                type="text"
+                id="pix-codigo"
+                value="{{ codigo_pix }}"
+                readonly
+                aria-label="Código PIX copia e cola"
+            >
+
+            <button type="button" id="pix-copiar">
+                Copiar
+            </button>
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="pix-status" id="pix-status">
+            <span class="pix-spinner" id="pix-spinner"></span>
+            <span id="pix-status-texto">Aguardando pagamento...</span>
+        </div>
+
+        <p class="pix-expira">
+            O código expira em <strong id="pix-tempo">10:00</strong>
+        </p>
+
+        <button type="button" class="pix-cancelar" id="pix-cancelar">
+            Cancelar e escolher outra forma
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+    // Simulação do pagamento.
+    // Nada disso fala com banco de verdade: são só tempos
+    // de espera para a tela parecer um pagamento real.
+
+    const formPagamento = document.getElementById("form-pagamento");
+    const botaoPagar = document.getElementById("botao-pagar");
+
+    const pixFundo = document.getElementById("pix-fundo");
+    const pixStatus = document.getElementById("pix-status");
+    const pixStatusTexto = document.getElementById("pix-status-texto");
+    const pixTempo = document.getElementById("pix-tempo");
+
+    // Tempo até o "banco" confirmar o PIX (em milissegundos)
+    const ESPERA_PIX = 9000;
+
+    let temporizadores = [];
+    let contagem = null;
+    let enviando = false;
+
+
+    function limparTemporizadores() {
+        temporizadores.forEach(clearTimeout);
+        temporizadores = [];
+        clearInterval(contagem);
+    }
+
+
+    function enviarFormulario() {
+        enviando = true;
+        formPagamento.submit();
+    }
+
+
+    function iniciarContagem() {
+        let segundos = 10 * 60;
+
+        pixTempo.textContent = "10:00";
+
+        contagem = setInterval(function () {
+            segundos--;
+
+            const min = String(Math.floor(segundos / 60)).padStart(2, "0");
+            const seg = String(segundos % 60).padStart(2, "0");
+
+            pixTempo.textContent = min + ":" + seg;
+
+            if (segundos <= 0) {
+                clearInterval(contagem);
+            }
+        }, 1000);
+    }
+
+
+    function abrirPix() {
+        pixFundo.hidden = false;
+        document.body.style.overflow = "hidden";
+
+        pixStatus.className = "pix-status";
+        pixStatusTexto.textContent = "Aguardando pagamento...";
+
+        iniciarContagem();
+
+        temporizadores.push(setTimeout(function () {
+            pixStatusTexto.textContent = "Pagamento identificado, confirmando com o banco...";
+        }, ESPERA_PIX));
+
+        temporizadores.push(setTimeout(function () {
+            clearInterval(contagem);
+            pixStatus.className = "pix-status pago";
+            pixStatusTexto.textContent = "Pagamento recebido!";
+        }, ESPERA_PIX + 2500));
+
+        temporizadores.push(setTimeout(enviarFormulario, ESPERA_PIX + 4000));
+    }
+
+
+    function fecharPix() {
+        limparTemporizadores();
+        pixFundo.hidden = true;
+        document.body.style.overflow = "";
+    }
+
+
+    function processarCartao() {
+        botaoPagar.disabled = true;
+        botaoPagar.innerHTML = '<span class="pix-spinner claro"></span> Processando pagamento...';
+
+        temporizadores.push(setTimeout(enviarFormulario, 2500));
+    }
+
+
+    formPagamento.addEventListener("submit", function (evento) {
+
+        if (enviando) {
+            return;
+        }
+
+        evento.preventDefault();
+
+        const escolhida = formPagamento.querySelector(
+            'input[name="forma_pagamento"]:checked'
+        );
+
+        if (!escolhida) {
+            return;
+        }
+
+        if (escolhida.value === "pix") {
+            abrirPix();
+        } else {
+            processarCartao();
+        }
+    });
+
+
+    document.getElementById("pix-cancelar").addEventListener("click", fecharPix);
+
+
+    document.getElementById("pix-copiar").addEventListener("click", function () {
+        const campo = document.getElementById("pix-codigo");
+        const botao = this;
+
+        campo.select();
+
+        navigator.clipboard.writeText(campo.value)
+            .catch(function () {
+                document.execCommand("copy");
+            })
+            .finally(function () {
+                botao.textContent = "Copiado!";
+                setTimeout(function () {
+                    botao.textContent = "Copiar";
+                }, 2000);
+            });
+    });
+</script>
 
 {% endblock %}

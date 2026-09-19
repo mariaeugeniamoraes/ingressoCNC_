@@ -61,7 +61,7 @@ Resumo do pedido | Ingressos Náutico
 
 
         <form
-    action="{% url 'verificacao_facial' setor.id %}"
+    action="{% url 'pagamento' setor.id %}"
     method="POST"
 >
 
@@ -77,7 +77,7 @@ Resumo do pedido | Ingressos Náutico
         type="submit"
         class="botao-principal botao-finalizar"
     >
-        Continuar para verificação
+        Continuar para pagamento
     </button>
 
 </form>

@@ -1,7 +1,13 @@
 {% extends 'ingressos/base.html' %}
+{% load static %}
 
 {% block title %}
 Compra realizada | Ingressos Náutico
+{% endblock %}
+
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/compra.css' %}">
 {% endblock %}
 
 
@@ -22,7 +28,7 @@ Compra realizada | Ingressos Náutico
         <h2>Compra realizada com sucesso!</h2>
 
         <p class="mensagem-sucesso">
-            Seu ingresso foi registrado com sucesso.
+            Pagamento confirmado e ingresso registrado.
         </p>
 
 
@@ -56,9 +62,38 @@ Compra realizada | Ingressos Náutico
         </div>
 
 
-        <div class="biometria-sucesso">
-            ✓ Identidade verificada
-        </div>
+        <!-- VERIFICAÇÃO FACIAL (OPCIONAL) -->
+
+        {% if pedido.biometria_verificada %}
+
+            <div class="biometria-sucesso">
+                ✓ Identidade verificada
+            </div>
+
+        {% else %}
+
+            <div class="biometria-opcional">
+
+                <span class="biometria-opcional-icone">👤</span>
+
+                <div>
+                    <strong>Quer agilizar sua entrada no estádio?</strong>
+                    <p>
+                        Faça a verificação facial agora ou,
+                        se preferir, depois em Meus pedidos.
+                    </p>
+                </div>
+
+                <a
+                    href="{% url 'verificar_identidade' pedido.id %}"
+                    class="botao-secundario"
+                >
+                    Verificar agora
+                </a>
+
+            </div>
+
+        {% endif %}
 
 
         <div class="acoes-sucesso">

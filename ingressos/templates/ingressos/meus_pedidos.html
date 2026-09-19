@@ -1,7 +1,12 @@
 {% extends 'ingressos/base.html' %}
+{% load static %}
 
 {% block title %}
 Meus Pedidos | Ingressos Náutico
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'ingressos/css/compra.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -55,7 +60,7 @@ Meus Pedidos | Ingressos Náutico
                         </span>
                     {% else %}
                         <span class="status-pendente">
-                            Verificação pendente
+                            Identidade não verificada
                         </span>
                     {% endif %}
 
@@ -129,12 +134,25 @@ Meus Pedidos | Ingressos Náutico
 
                 {% if pedido.status_pagamento == "pago" %}
 
-                    <a
-                        href="{% url 'ingresso' pedido.id %}"
-                        class="botao-principal"
-                    >
-                        🎟 Ver ingresso digital
-                    </a>
+                    <div class="pedido-acoes">
+
+                        {% if not pedido.biometria_verificada %}
+                            <a
+                                href="{% url 'verificar_identidade' pedido.id %}"
+                                class="botao-secundario"
+                            >
+                                👤 Verificar identidade
+                            </a>
+                        {% endif %}
+
+                        <a
+                            href="{% url 'ingresso' pedido.id %}"
+                            class="botao-principal"
+                        >
+                            🎟 Ver ingresso digital
+                        </a>
+
+                    </div>
 
                 {% endif %}
 

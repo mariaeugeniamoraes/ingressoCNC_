@@ -71,7 +71,12 @@ Ingresso #{{ pedido.id }} | Ingressos Náutico
                 {% if pedido.biometria_verificada %}
                     <p class="ingresso-selo">✓ Identidade verificada</p>
                 {% else %}
-                    <p class="ingresso-selo pendente">Verificação pendente</p>
+                    <p class="ingresso-selo pendente">
+                        Identidade não verificada
+                        <a href="{% url 'verificar_identidade' pedido.id %}" class="nao-imprimir">
+                            Verificar agora
+                        </a>
+                    </p>
                 {% endif %}
 
             </div>

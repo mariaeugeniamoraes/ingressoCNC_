@@ -1,0 +1,389 @@
+/* =========================
+   TELA DO PIX
+========================= */
+
+.pix-fundo {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 16px;
+
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.pix-fundo[hidden] {
+    display: none;
+}
+
+.pix-janela {
+    width: 100%;
+    max-width: 420px;
+    max-height: 100%;
+    overflow-y: auto;
+
+    background: #ffffff;
+    border-top: 5px solid #d71920;
+    border-radius: 16px;
+
+    padding: 28px;
+
+    text-align: center;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+
+    animation: pix-entrar 0.25s ease;
+}
+
+@keyframes pix-entrar {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pix-janela h2 {
+    margin: 6px 0 4px;
+    font-size: 22px;
+}
+
+.pix-valor {
+    color: #d71920;
+    font-size: 28px;
+    font-weight: 700;
+
+    margin-bottom: 18px;
+}
+
+.pix-qr {
+    width: 210px;
+    margin: 0 auto 14px;
+
+    padding: 8px;
+    border: 1px solid #e7e7e7;
+    border-radius: 12px;
+}
+
+.pix-qr svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.pix-instrucao {
+    color: #666666;
+    font-size: 14px;
+    line-height: 1.5;
+
+    margin-bottom: 16px;
+}
+
+
+/* Copia e cola */
+
+.pix-copia {
+    display: flex;
+    gap: 8px;
+
+    margin-bottom: 18px;
+}
+
+.pix-copia input {
+    flex: 1;
+    min-width: 0;
+
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+
+    padding: 10px 12px;
+
+    background: #f7f7f7;
+    color: #444444;
+    font-size: 13px;
+}
+
+.pix-copia button {
+    border: 2px solid #d71920;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #d71920;
+
+    padding: 0 16px;
+
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.pix-copia button:hover {
+    background: #fff1f1;
+}
+
+
+/* Status do pagamento */
+
+.pix-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    background: #fff4e5;
+    color: #9a5b00;
+
+    border-radius: 10px;
+    padding: 13px;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.pix-status.pago {
+    background: #eef8f0;
+    color: #237a3b;
+}
+
+.pix-status.pago .pix-spinner {
+    display: none;
+}
+
+.pix-status.pago #pix-status-texto::before {
+    content: "✓ ";
+}
+
+.pix-spinner {
+    display: inline-block;
+    flex-shrink: 0;
+
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+
+    animation: girar 0.8s linear infinite;
+}
+
+.pix-spinner.claro {
+    border-color: #ffffff;
+    border-right-color: transparent;
+}
+
+@keyframes girar {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.pix-expira {
+    color: #777777;
+    font-size: 13px;
+
+    margin: 12px 0 16px;
+}
+
+.pix-cancelar {
+    border: none;
+    background: none;
+
+    color: #666666;
+    font-size: 14px;
+    text-decoration: underline;
+
+    cursor: pointer;
+}
+
+.pix-cancelar:hover {
+    color: #d71920;
+}
+
+.botao-confirmar-pagamento:disabled {
+    opacity: 0.8;
+    cursor: wait;
+    transform: none;
+}
+
+
+/* =========================
+   VERIFICAÇÃO FACIAL OPCIONAL
+========================= */
+
+.link-agora-nao {
+    display: inline-block;
+    margin-top: 16px;
+
+    color: #666666;
+    font-size: 14px;
+}
+
+.link-agora-nao:hover {
+    color: #d71920;
+}
+
+.botao-verificar:disabled {
+    opacity: 0.8;
+    cursor: wait;
+}
+
+.icone-rosto.analisando {
+    animation: pulsar 1s ease-in-out infinite;
+}
+
+.icone-rosto.aprovado {
+    border-color: #237a3b;
+    color: #237a3b;
+    font-weight: 700;
+}
+
+@keyframes pulsar {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(215, 25, 32, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 14px rgba(215, 25, 32, 0);
+    }
+}
+
+
+/* Aviso na tela de compra finalizada */
+
+.biometria-opcional {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    background: #f7f7f7;
+    border-left: 4px solid #d71920;
+    border-radius: 6px;
+
+    padding: 15px;
+    margin-bottom: 30px;
+
+    text-align: left;
+}
+
+.biometria-opcional-icone {
+    font-size: 28px;
+}
+
+.biometria-opcional div {
+    flex: 1;
+}
+
+.biometria-opcional p {
+    color: #666666;
+    font-size: 14px;
+    margin-top: 3px;
+}
+
+.biometria-opcional .botao-secundario {
+    padding: 10px 16px;
+    white-space: nowrap;
+}
+
+
+/* Botões lado a lado em Meus pedidos */
+
+.pedido-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+@media (max-width: 600px) {
+
+    .biometria-opcional {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .pedido-acoes {
+        flex-direction: column;
+    }
+
+    .pedido-acoes a {
+        text-align: center;
+    }
+}
+
+
+/* =========================
+   CÂMERA DA VERIFICAÇÃO
+========================= */
+
+.camera-area {
+    margin: 0 auto 20px;
+    max-width: 360px;
+}
+
+.camera-area[hidden],
+.icone-rosto[hidden],
+.botao-verificar[hidden] {
+    display: none;
+}
+
+.camera-moldura {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 4 / 3;
+
+    overflow: hidden;
+
+    border: 4px solid #d71920;
+    border-radius: 16px;
+
+    background: #111111;
+
+    /* Espelha a imagem, como uma selfie */
+    transform: scaleX(-1);
+
+    transition: border-color 0.2s ease;
+}
+
+.camera-moldura.ok {
+    border-color: #237a3b;
+}
+
+.camera-moldura video,
+.camera-moldura canvas {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.camera-progresso {
+    height: 8px;
+    margin-top: 12px;
+
+    background: #eeeeee;
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.camera-barra {
+    width: 0;
+    height: 100%;
+
+    background: #237a3b;
+
+    transition: width 0.15s linear;
+}
