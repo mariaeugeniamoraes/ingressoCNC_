@@ -38,7 +38,6 @@ para jogos do Clube Náutico Capibaribe.
 - [Capturas de tela](#-capturas-de-tela)
 - [Vídeos](#-vídeos)
 - [Deploy](#-deploy)
-- [Próximos passos](#-próximos-passos)
 - [Autores](#-autores)
 - [Licença](#-licença)
 
@@ -77,7 +76,6 @@ negócio, segurança e versionamento com Git.
 - [x] Página de validação do ingresso para a equipe do clube
 - [x] Painel administrativo para cadastrar jogos e setores
 - [x] Layout responsivo para celular
-      
 
 ---
 
@@ -115,7 +113,7 @@ ingresso.
 
 ## 🔄 Fluxo da aplicação
 
-```
+```text
 Cadastro / Login
         ↓
 Lista de jogos  ──────────────→  jogo encerrado ou esgotado: compra bloqueada
@@ -149,21 +147,23 @@ Meus pedidos / Perfil
 
 **Back-end**
 - Python 3
-- Django 6
+- Django 5.2
 - qrcode (geração do QR Code)
 
 **Banco de dados**
-- MySQL
+- MySQL — desenvolvimento local
+- PostgreSQL — produção
 
 **Ferramentas**
 - Git e GitHub
+- Render
 - python-dotenv (configuração por variáveis de ambiente)
 
 ---
 
 ## 🗄️ Modelagem do banco de dados
 
-```
+```text
 Jogo
 ├── adversario     CharField
 ├── data           DateField
@@ -292,8 +292,7 @@ podem ser ajustados pelo painel administrativo.
 
 ## 📁 Estrutura de pastas
 
-
-```
+```text
 ingressoCNC_/
 ├── manage.py
 ├── requirements.txt
@@ -327,7 +326,6 @@ ingressoCNC_/
     │   └── extras.css            # jogos, perfil e páginas de erro
     └── templates/ingressos/      # páginas HTML
 ```
-```
 
 ---
 
@@ -348,10 +346,11 @@ Medidas aplicadas no projeto:
   endereços do próprio site.
 - **Proteção contra CSRF** nos formulários, com `{% csrf_token %}`.
 - **Senhas com hash** pelo sistema de autenticação do Django.
-- **Credenciais fora do código**, lidas do `.env`.
+- **Credenciais fora do código**, lidas de variáveis de ambiente.
 
-Antes de publicar o site, ainda é preciso definir `DEBUG = False`,
-preencher `ALLOWED_HOSTS` e mover a `SECRET_KEY` para o `.env`.
+Na versão publicada, o sistema utiliza `DEBUG = False`, `ALLOWED_HOSTS`
+configurado para o domínio do Render e credenciais armazenadas em
+variáveis de ambiente.
 
 ---
 
@@ -372,6 +371,7 @@ preencher `ALLOWED_HOSTS` e mover a `SECRET_KEY` para o `.env`.
 | Vídeo | Link |
 |---|---|
 | Apresentação do projeto Visão Cliente | [![YouTube](https://img.shields.io/badge/Assistir-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/Dj7DkGM3EAg) |
+
 ---
 
 ## ☁️ Deploy
@@ -383,18 +383,21 @@ O sistema está publicado e disponível para acesso online.
 - **Banco de dados em produção:** PostgreSQL (Render)
 - **Banco de dados em desenvolvimento local:** MySQL
 
-A aplicação Django está hospedada no Render e conectada a um banco de dados PostgreSQL em produção. Durante o desenvolvimento local, o projeto utiliza MySQL.
+A aplicação Django está hospedada no Render e conectada a um banco de
+dados PostgreSQL em produção. Durante o desenvolvimento local, o projeto
+utiliza MySQL.
+
 ---
 
 ## 👨‍💻 Autores
 
-**Daniel Bezerra**
+**Daniel Bezerra**  
 Estudante de Ciência da Computação na CESAR School
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/DanielBezerraCNC)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/danielsantanabezerra)
 
-**Maria Eugênia Moraes**
+**Maria Eugênia Moraes**  
 Estudante de Ciência da Computação na CESAR School
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/mariaeugeniamoraes)
