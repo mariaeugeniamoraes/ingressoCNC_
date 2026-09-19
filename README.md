@@ -77,8 +77,7 @@ negócio, segurança e versionamento com Git.
 - [x] Página de validação do ingresso para a equipe do clube
 - [x] Painel administrativo para cadastrar jogos e setores
 - [x] Layout responsivo para celular
-- [ ] Reconhecimento facial real na catraca
-- [ ] Envio do ingresso por e-mail
+      
 
 ---
 
