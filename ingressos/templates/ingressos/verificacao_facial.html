@@ -8,9 +8,6 @@ Verificação facial | Ingressos Náutico
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'ingressos/css/compra.css' %}">
-
-<!-- Biblioteca de detecção de rosto (roda só no navegador) -->
-<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.15/dist/face-api.js"></script>
 {% endblock %}
 
 
@@ -39,26 +36,8 @@ Verificação facial | Ingressos Náutico
 
     <div class="card-verificacao">
 
-        <!-- ÍCONE (antes de ligar a câmera) -->
-
         <div class="icone-rosto" id="icone-rosto">
             👤
-        </div>
-
-
-        <!-- CÂMERA -->
-
-        <div class="camera-area" id="camera-area" hidden>
-
-            <div class="camera-moldura" id="camera-moldura">
-                <video id="camera-video" autoplay muted playsinline></video>
-                <canvas id="camera-canvas"></canvas>
-            </div>
-
-            <div class="camera-progresso">
-                <div class="camera-barra" id="camera-barra"></div>
-            </div>
-
         </div>
 
 
@@ -71,17 +50,14 @@ Verificação facial | Ingressos Náutico
 
             Pedido #{{ pedido.id }} — {{ pedido.setor.jogo }},
             setor {{ pedido.setor.nome }}.
-            Vamos usar a câmera para confirmar que há uma
-            pessoa real fazendo a verificação.
 
         </p>
 
 
         <div class="aviso-privacidade">
 
-            A imagem da câmera é analisada apenas no seu
-            navegador. Nenhuma foto é salva ou enviada
-            para o servidor.
+            Esta é uma simulação acadêmica. O protótipo
+            não coleta nem armazena dados biométricos reais.
 
         </div>
 
@@ -91,17 +67,18 @@ Verificação facial | Ingressos Náutico
             method="POST"
             id="form-verificacao"
         >
+
             {% csrf_token %}
+
+            <button
+                type="submit"
+                class="botao-principal botao-verificar"
+                id="botao-verificar"
+            >
+                Verificar identidade
+            </button>
+
         </form>
-
-
-        <button
-            type="button"
-            class="botao-principal botao-verificar"
-            id="botao-verificar"
-        >
-            Ligar câmera e verificar
-        </button>
 
 
         <a
@@ -118,305 +95,44 @@ Verificação facial | Ingressos Náutico
 
 
 <script>
-    // --------------------------------------------------------------
-    // VERIFICAÇÃO FACIAL
-    //
-    // Liga a câmera e usa a biblioteca face-api para achar um rosto
-    // na imagem. Só aprova quando encontra UM rosto, centralizado e
-    // perto o bastante, por alguns instantes seguidos.
-    //
-    // Importante: isso detecta que há uma pessoa na frente da câmera,
-    // mas não confere QUEM é a pessoa.
-    // --------------------------------------------------------------
+    // Simula a análise do rosto por alguns segundos
+    // antes de enviar o formulário.
 
-    const MODELOS = "https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.15/model/";
+    const formVerificacao = document.getElementById("form-verificacao");
 
-    // Quantas leituras boas seguidas são necessárias para aprovar
-    const LEITURAS_NECESSARIAS = 10;
+    formVerificacao.addEventListener("submit", function (evento) {
 
-    // Intervalo entre uma leitura e outra (milissegundos)
-    const INTERVALO = 150;
+        evento.preventDefault();
 
-    const botao = document.getElementById("botao-verificar");
-    const linkAgoraNao = document.getElementById("link-agora-nao");
-    const icone = document.getElementById("icone-rosto");
-    const areaCamera = document.getElementById("camera-area");
-    const moldura = document.getElementById("camera-moldura");
-    const video = document.getElementById("camera-video");
-    const canvas = document.getElementById("camera-canvas");
-    const barra = document.getElementById("camera-barra");
-    const titulo = document.getElementById("titulo-verificacao");
-    const texto = document.getElementById("texto-verificacao");
-
-    let modeloCarregado = false;
-    let fluxoCamera = null;
-    let ativo = false;
-    let acertos = 0;
-
-
-    function mostrarErro(mensagem) {
-        pararCamera();
-
-        areaCamera.hidden = true;
-        icone.hidden = false;
-
-        titulo.textContent = "Não foi possível verificar";
-        texto.textContent = mensagem;
-
-        botao.disabled = false;
-        botao.textContent = "Tentar novamente";
-        linkAgoraNao.style.visibility = "visible";
-    }
-
-
-    function pararCamera() {
-        ativo = false;
-
-        if (fluxoCamera) {
-            fluxoCamera.getTracks().forEach(function (trilha) {
-                trilha.stop();
-            });
-            fluxoCamera = null;
-        }
-    }
-
-
-    function atualizarProgresso() {
-        const porcentagem = Math.min(acertos / LEITURAS_NECESSARIAS, 1) * 100;
-        barra.style.width = porcentagem + "%";
-    }
-
-
-    function desenharCaixa(caixa, corOk) {
-        const contexto = canvas.getContext("2d");
-
-        contexto.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (!caixa) {
-            return;
-        }
-
-        contexto.lineWidth = 4;
-        contexto.strokeStyle = corOk ? "#237a3b" : "#d71920";
-        contexto.strokeRect(caixa.x, caixa.y, caixa.width, caixa.height);
-    }
-
-
-    // Olha uma detecção e devolve o problema, ou null se estiver tudo certo
-    function avaliar(deteccoes) {
-
-        if (deteccoes.length === 0) {
-            return "Nenhum rosto encontrado. Olhe para a câmera.";
-        }
-
-        if (deteccoes.length > 1) {
-            return "Apenas uma pessoa deve aparecer na câmera.";
-        }
-
-        const caixa = deteccoes[0].box;
-
-        const larguraVideo = video.videoWidth;
-        const alturaVideo = video.videoHeight;
-
-        const tamanho = caixa.width / larguraVideo;
-        const centroX = (caixa.x + caixa.width / 2) / larguraVideo;
-        const centroY = (caixa.y + caixa.height / 2) / alturaVideo;
-
-        if (tamanho < 0.2) {
-            return "Aproxime o rosto da câmera.";
-        }
-
-        if (tamanho > 0.75) {
-            return "Afaste um pouco o rosto.";
-        }
-
-        if (Math.abs(centroX - 0.5) > 0.18 || Math.abs(centroY - 0.5) > 0.22) {
-            return "Centralize o rosto na moldura.";
-        }
-
-        return null;
-    }
-
-
-    async function analisar() {
-
-        if (!ativo) {
-            return;
-        }
-
-        let deteccoes = [];
-
-        try {
-            deteccoes = await faceapi.detectAllFaces(
-                video,
-                new faceapi.TinyFaceDetectorOptions({
-                    inputSize: 320,
-                    scoreThreshold: 0.5
-                })
-            );
-        } catch (erro) {
-            console.error(erro);
-        }
-
-        if (!ativo) {
-            return;
-        }
-
-        const problema = avaliar(deteccoes);
-        const caixa = deteccoes.length === 1 ? deteccoes[0].box : null;
-
-        if (problema) {
-            // Perde um pouco do progresso, sem zerar de uma vez,
-            // para uma leitura ruim isolada não atrapalhar tanto.
-            acertos = Math.max(acertos - 2, 0);
-
-            texto.textContent = problema;
-            moldura.classList.remove("ok");
-            desenharCaixa(caixa, false);
-
-        } else {
-            acertos++;
-
-            texto.textContent = "Rosto detectado! Mantenha parado...";
-            moldura.classList.add("ok");
-            desenharCaixa(caixa, true);
-        }
-
-        atualizarProgresso();
-
-        if (acertos >= LEITURAS_NECESSARIAS) {
-            concluir();
-            return;
-        }
-
-        setTimeout(analisar, INTERVALO);
-    }
-
-
-    function concluir() {
-        pararCamera();
-
-        areaCamera.hidden = true;
-        icone.hidden = false;
-        icone.classList.add("aprovado");
-        icone.textContent = "✓";
-
-        titulo.textContent = "Identidade verificada!";
-        texto.textContent = "Abrindo seu ingresso...";
-
-        botao.hidden = true;
-        linkAgoraNao.style.visibility = "hidden";
-
-        setTimeout(function () {
-            document.getElementById("form-verificacao").submit();
-        }, 1200);
-    }
-
-
-    async function iniciar() {
+        const botao = document.getElementById("botao-verificar");
+        const icone = document.getElementById("icone-rosto");
+        const titulo = document.getElementById("titulo-verificacao");
+        const texto = document.getElementById("texto-verificacao");
 
         botao.disabled = true;
-        linkAgoraNao.style.visibility = "hidden";
+        botao.textContent = "Analisando...";
+        document.getElementById("link-agora-nao").style.visibility = "hidden";
 
-        titulo.textContent = "Preparando a verificação";
+        icone.classList.add("analisando");
+        titulo.textContent = "Posicione seu rosto no centro";
+        texto.textContent = "Mantenha o rosto parado e bem iluminado.";
 
-        // A câmera só funciona em https ou no localhost
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            mostrarErro(
-                "Seu navegador não permite usar a câmera nesta página. " +
-                "Abra o site pelo endereço com https."
-            );
-            return;
-        }
+        setTimeout(function () {
+            texto.textContent = "Comparando com os dados da conta...";
+        }, 1800);
 
-        if (typeof faceapi === "undefined") {
-            mostrarErro(
-                "Não foi possível carregar o detector de rostos. " +
-                "Verifique sua conexão com a internet."
-            );
-            return;
-        }
+        setTimeout(function () {
+            icone.classList.remove("analisando");
+            icone.classList.add("aprovado");
+            icone.textContent = "✓";
+            titulo.textContent = "Identidade verificada!";
+            texto.textContent = "Abrindo seu ingresso...";
+        }, 3600);
 
-        // 1) Carrega o modelo de detecção (só na primeira vez)
-        if (!modeloCarregado) {
-            botao.textContent = "Carregando detector...";
-
-            try {
-                await faceapi.nets.tinyFaceDetector.loadFromUri(MODELOS);
-                modeloCarregado = true;
-            } catch (erro) {
-                console.error(erro);
-                mostrarErro(
-                    "Não foi possível carregar o detector de rostos. " +
-                    "Verifique sua conexão com a internet."
-                );
-                return;
-            }
-        }
-
-        // 2) Pede acesso à câmera
-        botao.textContent = "Ligando a câmera...";
-        texto.textContent = "Permita o acesso à câmera quando o navegador pedir.";
-
-        try {
-            fluxoCamera = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: "user",
-                    width: { ideal: 640 },
-                    height: { ideal: 480 }
-                },
-                audio: false
-            });
-        } catch (erro) {
-            console.error(erro);
-
-            if (erro.name === "NotAllowedError") {
-                mostrarErro(
-                    "O acesso à câmera foi bloqueado. Libere a câmera no " +
-                    "cadeado ao lado do endereço do site e tente de novo."
-                );
-            } else if (erro.name === "NotFoundError") {
-                mostrarErro("Nenhuma câmera foi encontrada neste aparelho.");
-            } else if (erro.name === "NotReadableError") {
-                mostrarErro(
-                    "A câmera está sendo usada por outro programa. " +
-                    "Feche-o e tente de novo."
-                );
-            } else {
-                mostrarErro("Não foi possível ligar a câmera.");
-            }
-            return;
-        }
-
-        video.srcObject = fluxoCamera;
-        await video.play();
-
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        // 3) Mostra a câmera e começa a procurar o rosto
-        icone.hidden = true;
-        areaCamera.hidden = false;
-        botao.hidden = true;
-
-        titulo.textContent = "Posicione seu rosto na moldura";
-        texto.textContent = "Procurando rosto...";
-
-        acertos = 0;
-        atualizarProgresso();
-
-        ativo = true;
-        analisar();
-    }
-
-
-    botao.addEventListener("click", function () {
-        botao.hidden = false;
-        iniciar();
+        setTimeout(function () {
+            formVerificacao.submit();
+        }, 4800);
     });
-
-    // Desliga a câmera se a pessoa sair da página
-    window.addEventListener("pagehide", pararCamera);
 </script>
 
 {% endblock %}
