@@ -4,3 +4,5 @@ __pycache__/
 .env
 config/settings_local.py
 local.sqlite3
+# Arquivos gerados pelo collectstatic
+staticfiles/
