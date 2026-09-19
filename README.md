@@ -16,7 +16,7 @@
 Sistema web desenvolvido em Django para simular a compra de ingressos
 para jogos do Clube Náutico Capibaribe.
 
-> ⚠️ **Projeto acadêmico e de estudo.**
+> ⚠️ **Projeto de estudo.**
 > Este sistema não possui vínculo oficial com o Clube Náutico Capibaribe
 > e não realiza vendas nem pagamentos reais.
 
@@ -365,8 +365,8 @@ preencher `ALLOWED_HOSTS` e mover a `SECRET_KEY` para o `.env`.
 
 | Vídeo | Link |
 |---|---|
-| Apresentação do projeto | _adicionar link_ |
-| Demonstração do sistema | _adicionar link_ |
+| Apresentação do projeto | https://youtu.be/Dj7DkGM3EAg |
+
 
 ---
 
