@@ -111,57 +111,6 @@ Criar conta | Ingressos Náutico
 
             <div class="campo-formulario">
 
-                <label for="{{ form.first_name.id_for_label }}">
-                    Nome
-                </label>
-
-                {{ form.first_name }}
-
-                {% if form.first_name.errors %}
-                    <div class="erro-campo">
-                        {{ form.first_name.errors }}
-                    </div>
-                {% endif %}
-
-            </div>
-
-
-            <div class="campo-formulario">
-
-                <label for="{{ form.last_name.id_for_label }}">
-                    Sobrenome
-                </label>
-
-                {{ form.last_name }}
-
-                {% if form.last_name.errors %}
-                    <div class="erro-campo">
-                        {{ form.last_name.errors }}
-                    </div>
-                {% endif %}
-
-            </div>
-
-
-            <div class="campo-formulario">
-
-                <label for="{{ form.email.id_for_label }}">
-                    E-mail
-                </label>
-
-                {{ form.email }}
-
-                {% if form.email.errors %}
-                    <div class="erro-campo">
-                        {{ form.email.errors }}
-                    </div>
-                {% endif %}
-
-            </div>
-
-
-            <div class="campo-formulario">
-
                 <label for="{{ form.password1.id_for_label }}">
                     Senha
                 </label>
