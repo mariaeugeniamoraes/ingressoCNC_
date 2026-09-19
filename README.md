@@ -292,15 +292,22 @@ podem ser ajustados pelo painel administrativo.
 
 ## 📁 Estrutura de pastas
 
+
 ```
 ingressoCNC_/
 ├── manage.py
 ├── requirements.txt
+├── build.sh                      # comandos executados no deploy (Render)
+├── dados_iniciais.json           # jogos e setores carregados no banco
 ├── README.md
+├── LICENSE
+├── .gitignore
 ├── .env                          # local, fora do Git
 ├── config/                       # configurações do projeto
 │   ├── settings.py
-│   └── urls.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
 ├── docs/                         # imagens usadas no README
 └── ingressos/                    # app principal
     ├── models.py                 # Jogo, Setor e Pedido
@@ -313,11 +320,13 @@ ingressoCNC_/
     ├── management/commands/      # criar_jogos e criar_setores
     ├── migrations/
     ├── static/ingressos/css/
-    │   ├── style.css
-    │   ├── mapa.css
-    │   ├── ingresso.css
-    │   └── extras.css
+    │   ├── style.css             # estilo geral do site
+    │   ├── mapa.css              # mapa do estádio
+    │   ├── ingresso.css          # ingresso digital
+    │   ├── compra.css            # tela do PIX e verificação facial
+    │   └── extras.css            # jogos, perfil e páginas de erro
     └── templates/ingressos/      # páginas HTML
+```
 ```
 
 ---
@@ -356,40 +365,25 @@ preencher `ALLOWED_HOSTS` e mover a `SECRET_KEY` para o `.env`.
 |:---:|:---:|
 | ![Mapa](docs/mapa.png) | ![Ingresso](docs/ingresso.png) |
 
-> Salve os prints na pasta `docs/` com esses nomes para as imagens
-> aparecerem aqui.
-
 ---
 
 ## 🎥 Vídeos
 
 | Vídeo | Link |
 |---|---|
-| Apresentação do projeto | [![YouTube](https://img.shields.io/badge/Assistir-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/Dj7DkGM3EAg) |
+| Apresentação do projeto Visão Cliente | [![YouTube](https://img.shields.io/badge/Assistir-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/Dj7DkGM3EAg) |
 ---
 
 ## ☁️ Deploy
 
-> _Seção a ser preenchida quando o sistema for publicado._
+O sistema está publicado e disponível para acesso online.
 
-- **Plataforma:** _a definir_
-- **Link do sistema:** _a definir_
-- **Banco de dados:** _a definir_
+- **Plataforma:** Render
+- **Link do sistema:** https://ingressocnc.onrender.com
+- **Banco de dados em produção:** PostgreSQL (Render)
+- **Banco de dados em desenvolvimento local:** MySQL
 
-Para publicar, é necessário hospedar também o banco de dados, já que o
-MySQL local não fica acessível pela internet.
-
----
-
-## 🔭 Próximos passos
-
-- Reconhecimento facial real na catraca, com validação do ingresso
-- Marcar o ingresso como utilizado após a primeira leitura do QR Code
-- Integração com um gateway de pagamento em modo de teste
-- Envio do ingresso por e-mail
-- Testes automatizados
-- Deploy da aplicação
-
+A aplicação Django está hospedada no Render e conectada a um banco de dados PostgreSQL em produção. Durante o desenvolvimento local, o projeto utiliza MySQL.
 ---
 
 ## 👨‍💻 Autores
