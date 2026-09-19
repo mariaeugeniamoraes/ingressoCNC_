@@ -6,17 +6,17 @@
     "adversario": "Sport Recife",
     "data": "2026-09-26",
     "horario": "16:30:00",
-    "estadio": "Estßdio dos Aflitos"
+    "estadio": "Estádio dos Aflitos"
   }
 },
 {
   "model": "ingressos.jogo",
   "pk": 3,
   "fields": {
-    "adversario": "GrÛmio Novorizontino",
+    "adversario": "Grêmio Novorizontino",
     "data": "2026-10-06",
     "horario": null,
-    "estadio": "Estßdio dos Aflitos"
+    "estadio": "Estádio dos Aflitos"
   }
 },
 {
@@ -26,17 +26,17 @@
     "adversario": "Vila Nova",
     "data": "2026-10-11",
     "horario": "17:30:00",
-    "estadio": "Estßdio dos Aflitos"
+    "estadio": "Estádio dos Aflitos"
   }
 },
 {
   "model": "ingressos.jogo",
   "pk": 5,
   "fields": {
-    "adversario": "AvaÝ",
+    "adversario": " Avaí",
     "data": "2026-10-31",
     "horario": null,
-    "estadio": "Estßdio dos Aflitos"
+    "estadio": "Estádio dos Aflitos"
   }
 },
 {
@@ -46,7 +46,7 @@
     "adversario": "CRB",
     "data": "2026-11-07",
     "horario": null,
-    "estadio": "Estßdio dos Aflitos"
+    "estadio": "Estádio dos Aflitos"
   }
 },
 {
@@ -74,7 +74,7 @@
   "pk": 5,
   "fields": {
     "jogo": 2,
-    "nome": "CaldeirÒo",
+    "nome": "Caldeirão",
     "preco": "60.00",
     "quantidade": 4000
   }
@@ -124,7 +124,7 @@
   "pk": 10,
   "fields": {
     "jogo": 3,
-    "nome": "CaldeirÒo",
+    "nome": "Caldeirão",
     "preco": "60.00",
     "quantidade": 4000
   }
@@ -174,7 +174,7 @@
   "pk": 15,
   "fields": {
     "jogo": 4,
-    "nome": "CaldeirÒo",
+    "nome": "Caldeirão",
     "preco": "60.00",
     "quantidade": 4000
   }
@@ -224,7 +224,7 @@
   "pk": 20,
   "fields": {
     "jogo": 5,
-    "nome": "CaldeirÒo",
+    "nome": "Caldeirão",
     "preco": "60.00",
     "quantidade": 4000
   }
@@ -274,7 +274,7 @@
   "pk": 25,
   "fields": {
     "jogo": 6,
-    "nome": "CaldeirÒo",
+    "nome": "Caldeirão",
     "preco": "60.00",
     "quantidade": 3998
   }
